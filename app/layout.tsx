@@ -1,6 +1,7 @@
 import "@/styles/globals.css"
 import { Metadata } from "next"
 
+import { Toaster } from "@/components/ui/toaster"
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
@@ -41,9 +42,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div className="grid-pattern relative flex min-h-screen flex-col bg-[#fbfbfb11]">
+            <div className="grid-pattern relative flex min-h-screen flex-col bg-[#fafafb] ">
               <div className="flex-1">{children}</div>
             </div>
+            <Toaster />
             <TailwindIndicator />
           </ThemeProvider>
         </body>
