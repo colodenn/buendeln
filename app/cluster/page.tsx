@@ -5,9 +5,16 @@ import { siteConfig } from "@/config/site"
 import { buttonVariants } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
 
-import { Map, GeoJson } from 'pigeon-maps'
+import { Map, GeoJson, Marker } from 'pigeon-maps'
 import { osm } from 'pigeon-maps/providers'
 import { ResponsiveScatterPlot } from '@nivo/scatterplot'
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import locations from "public/locations.json"
+import { Pin, PinIcon } from "lucide-react"
 
 const data = [
     {
@@ -1102,7 +1109,22 @@ export default function ClusterPage() {
                             6.955173334216852
                         ]}
                     >
-                    </Map>
+                        {locations.companies.map((company) => (
+                            <Marker
+                                width={40}
+                                anchor={[company.location.lat, company.location.long]}
+                                color={"#123123"}
+                            >
+                                <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
+                                    <Pin />
+                                    <p className="text-center group-hover:visible">{company.name}</p>
+                                </div>
+                            </Marker>
+                        )
+                        )
+                        }
+
+                    </Map >
                 </div>
             </div>
         </>
