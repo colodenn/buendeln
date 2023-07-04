@@ -141,7 +141,7 @@ export default function InputPage() {
                                                                 value={language.value}
                                                                 key={language.value}
                                                                 onSelect={(value) => {
-                                                                    form.setValue("language", value)
+                                                                    form.setValue("industry", value)
                                                                 }}
                                                             >
                                                                 {language.label}
