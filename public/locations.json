@@ -53,6 +53,132 @@
                 "lat": 49.20595001858,
                 "long": 7.042419978903
             }
+        },
+        {
+            "name": "Scheer GmbH",
+            "industry": "consultancy",
+            "size": "big",
+            "location": {
+                "lat": 49.257944,
+                "long": 7.042444
+            }
+        },
+        {
+            "name": "Prego Services GmbH",
+            "industry": "consultancy",
+            "size": "medium",
+            "location": {
+                "lat": 49.240722,
+                "long": 7.006833
+            }
+        },
+        {
+            "name": "Orbis AG",
+            "industry": "consultancy",
+            "size": "big",
+            "location": {
+                "lat": 49.239627,
+                "long": 6.956379
+            }
+        },
+        {
+            "name": "DHC Business Solutions GmbH & Co. KG",
+            "industry": "consultancy",
+            "size": "medium",
+            "location": {
+                "lat": 49.233611,
+                "long": 7.002389
+            }
+        },
+        {
+            "name": "kabea GmbH",
+            "industry": "consultancy",
+            "size": "small",
+            "location": {
+                "lat": 49.341722,
+                "long": 7.200056
+            }
+        },
+        {
+            "name": "DOMO NOVA GmbH",
+            "industry": "consultancy",
+            "size": "small",
+            "location": {
+                "lat": 49.000806,
+                "long": 8.424139
+            }
+        },
+        {
+            "name": "TFI Consult GmbH",
+            "industry": "consultancy",
+            "size": "small",
+            "location": {
+                "lat": 49.346311,
+                "long": 7.178346
+            }
+        },
+        {
+            "name": "Consor4 GmbH",
+            "industry": "consultancy",
+            "size": "small",
+            "location": {
+                "lat": 49.294167,
+                "long": 7.321472
+            }
+        },
+        {
+            "name": "PPG Perspektive Personalmanagement GmbH",
+            "industry": "consultancy",
+            "size": "medium",
+            "location": {
+                "lat": 49.329583,
+                "long": 7.279722
+            }
+        },
+        {
+            "name": "awikos AG",
+            "industry": "consultancy",
+            "size": "small",
+            "location": {
+                "lat": 49.340111,
+                "long": 7.371167
+            }
+        },
+        {
+            "name": "Werth-Solutions GmbH",
+            "industry": "consultancy",
+            "size": "small",
+            "location": {
+                "lat": 49.3115,
+                "long": 6.757806
+            }
+        },
+        {
+            "name": "UWS Unternehmensberatung GmbH",
+            "industry": "consultancy",
+            "size": "big",
+            "location": {
+                "lat": 49.310194,
+                "long": 6.736083
+            }
+        },
+        {
+            "name": "Thibera Consulting GmbH",
+            "industry": "consultancy",
+            "size": "medium",
+            "location": {
+                "lat": 49.282417,
+                "long": 7.1205
+            }
+        },
+        {
+            "name": "POS Consulting + Service GmbH",
+            "industry": "consultancy",
+            "size": "medium",
+            "location": {
+                "lat": 49.206028,
+                "long": 7.104389
+            }
         }
     ]
 }
