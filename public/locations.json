@@ -1,0 +1,58 @@
+{
+    "companies": [
+        {
+            "name": "IMA GmbH - Marketing & Consulting",
+            "industry": "consultancy",
+            "size": "big",
+            "location": {
+                "lat": 49.239390,
+                "long": 6.954800
+            }
+        },
+        {
+            "name": "Dreikant Consulting",
+            "industry": "consultancy",
+            "size": "small",
+            "location": {
+                "lat": 49.222350,
+                "long": 6.987050
+            }
+        },
+        {
+            "name": "Audimus Consulting",
+            "industry": "consultancy",
+            "size": "medium",
+            "location": {
+                "lat": 49.236408,
+                "long": 6.991760
+            }
+        },
+        {
+            "name": "PPMB Prozess- und Projekt-Management Beratung Dr. Schmidt GmbH",
+            "industry": "consultancy",
+            "size": "big",
+            "location": {
+                "lat": 49.468420,
+                "long": 7.169940
+            }
+        },
+        {
+            "name": "amotiq solutions GmbH",
+            "industry": "consultancy",
+            "size": "medium",
+            "location": {
+                "lat": 49.310960,
+                "long": 6.745320
+            }
+        },
+        {
+            "name": "PIKON International Consulting Group GmbH",
+            "industry": "consultancy",
+            "size": "big",
+            "location": {
+                "lat": 49.20595001858,
+                "long": 7.042419978903
+            }
+        }
+    ]
+}
