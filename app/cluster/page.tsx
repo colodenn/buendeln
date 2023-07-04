@@ -1103,10 +1103,10 @@ export default function ClusterPage() {
                 <div className="h-full w-6/12 overflow-hidden rounded-lg bg-white shadow-lg">
                     <Map
                         provider={osm}
-                        defaultZoom={11}
+                        defaultZoom={10.5}
                         defaultCenter={[
-                            49.29792588161936,
-                            6.955173334216852
+                            49.4,
+                            6.9
                         ]}
                     >
                         {locations.companies.map((company) => (
