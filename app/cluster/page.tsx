@@ -15,6 +15,7 @@ import {
     HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import locations from "public/locations.json"
+import customers from "public/companies.json"
 import { Pin, PinIcon } from "lucide-react"
 import { DataTableDemo } from "./data-table"
 import { useEffect, useState } from "react"
@@ -54,7 +55,7 @@ export const useStore = create<ConsultancyFilter>()((set) => ({
     )
     ,
     remove: (s) => set((state) => ({ filter: state.filter.filter(pre => pre.name != s.name) })),
-    clear: () => set((state) => ({ filter: [] }))
+    clear: () => set((state) => ({ filter: [] })),
 
 }))
 
@@ -83,6 +84,13 @@ interface companyEntry {
 }
 
 const companiesforcluster: companyEntry[] = [];
+
+const industries:string[] = []
+customers.forEach((customer) => {
+    if (!industries.includes(customer.industry)) {
+        industries.push(customer.industry)
+    }
+})
 
 
 locations.companies.forEach((company) => {
@@ -113,7 +121,7 @@ companiesforcluster.sort((a, b) => a.id.localeCompare(b.id))
 
 
 export default function ClusterPage() {
-    const { filter, add, clear } = useStore()
+    const { filter, add, clear, remove } = useStore()
     const [consultancyFilter, setConsultancyFilter] = useState([{
         name: "Orbis AG"
     }, {
@@ -124,50 +132,59 @@ export default function ClusterPage() {
     const [plotColors, setPlotColors] = useState(Object.values(color))
     const [selectedClusters, setSelectedClusters] = useState<string[]>([])
 
-    function addCluster(cluster: string) {
-        if (!selectedClusters.includes(cluster)) {
-            selectedClusters.push(cluster)
-        }else{
-            selectedClusters.splice(selectedClusters.indexOf(cluster), 1)
-        }
-        updateHighlights()
+    const [selectedCompanies, setSelectedCompanies] = useState<string[]>([])
+
+
+    function clearSelectedCompanies() {
+        setSelectedCompanies([])
+        update()
     }
 
-    function updateHighlights() {
-        if(selectedClusters.length == 0) {
-            resetHighlight()
-            resetCompanies()
-            clear()
-            return
+    function addCompany(company: string) {
+        if (!selectedCompanies.includes(company)) {
+            selectedCompanies.push(company)
         }
+        update()
+    }
 
-        resetHighlight()
-        resetCompanies()
+    function removeCompany(company: string) {
+        if (selectedCompanies.includes(company)) {
+            selectedCompanies.splice(selectedCompanies.indexOf(company), 1)
+        }
+        update()
+    }
 
-        // set highlights in scatterplot
-        setPlotColors(colors.map((color) => {
-            return selectedClusters.includes(color.id) ? color.color : "#AAAAAA"
-        }))
-        // set highlights in map
-        setCompanies(locations.companies.map((company) => {
-            return selectedClusters.includes(company.color) ? { ...company } : { ...company, color: "#AAAAAA" }
-        }))
+    function addCluster(cluster: string) {
+        if(!selectedClusters.includes(cluster)) {
+            selectedClusters.push(cluster)
+            locations.companies.forEach((company) => {
+                if(company.color == cluster) {
+                    addCompany(company.name)
+                }
+            })
+        }else{
+            selectedClusters.splice(selectedClusters.indexOf(cluster), 1)
+            locations.companies.forEach((company) => {
+                if(company.color == cluster) {
+                    removeCompany(company.name)
+                }
+            })
+        }
+        update()
+    }
 
-        // set selected companies in datatable
+    function update() {
+        add({ name: "cluster" })
+        remove({ name: "cluster" })
+
         clear()
-        locations.companies.forEach((company) => {
-            if (selectedClusters.includes(company.color)) {
-                add({ name: company.name })
-            }
+        selectedCompanies.forEach((company) => {
+            add({ name: company })
         })
     }
 
-    function resetHighlight() {
-        setPlotColors(Object.values(color))
-    }
-
-    function resetCompanies() {
-        setCompanies(locations.companies)
+    function companySelected(company: string) {
+        return selectedCompanies.includes(company) || selectedCompanies.length == 0
     }
 
 
@@ -191,6 +208,11 @@ export default function ClusterPage() {
                         nodeSize={20}
                         onClick={(node, event) => {
                             add({ name: node.data.name })
+                            if(selectedCompanies.includes(node.data.name)) {
+                                removeCompany(node.data.name)
+                            }else{
+                                addCompany(node.data.name)
+                            }
                         }}
                         nodeComponent={(props, index) => (
                             <animated.circle
@@ -198,7 +220,7 @@ export default function ClusterPage() {
                                 className={"cursor-pointer"}
                                 cx={props.style.x}
                                 cy={props.style.y}
-                                fill={props.style.color}
+                                fill={companySelected(props.node.data.name) ? props.style.color : "#AAAAAA"}
                                 r={props.style.size.to(size => size / 2)}
                             />
                         )
@@ -268,8 +290,8 @@ export default function ClusterPage() {
                                 offset={[-10, -20]}
                             >
                                 <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
-                                    <Pin style={{ color: company.color=="#AAAAAA" ? "#000000" : color[company.color], opacity: company.color=="#AAAAAA" ? 0.35 : 1.0}} />
-                                    <p className="text-center group-hover:visible" style={{opacity: company.color=="#AAAAAA" ? 0.0 : 1.0}}>{company.name}</p>
+                                    <Pin style={{ color: companySelected(company.name) ? color[company.color] : "#FFFFFF" , opacity: companySelected(company.name) ? 1.0 : 0.35}} />
+                                    <p className="text-center group-hover:visible" style={{opacity: companySelected(company.name) ? 1.0 : 0.0}}>{company.name}</p>
                                 </div>
                             </Marker>
                         )
