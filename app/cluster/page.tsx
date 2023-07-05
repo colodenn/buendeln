@@ -119,8 +119,17 @@ export default function ClusterPage() {
 
     const [companies, setCompanies] = useState(locations.companies)
     const [plotColors, setPlotColors] = useState(Object.values(color))
+    const  [currentCompany, setCurrentCompany] = useState("")
 
     function highlightCompany(id: string){
+        if(currentCompany == id){
+            resetHighlight()
+            resetCompanies()
+            setCurrentCompany("")
+            return
+        }
+
+        setCurrentCompany(id)
         resetHighlight()
         setPlotColors(colors.map((color) => {
             return color.id == id ? color.color : "#AAAAAA"
