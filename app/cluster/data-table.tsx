@@ -11,6 +11,7 @@ import {
 import {
     ColumnDef,
     ColumnFiltersState,
+    FilterFn,
     SortingState,
     VisibilityState,
     flexRender,
@@ -102,6 +103,7 @@ export const columns: ColumnDef<Company>[] = [
     {
         accessorKey: "consultancy",
         header: () => <div className="text-right">Consultancy</div>,
+        filterFn: "myCustomFilter",
         cell: ({ row }) => {
 
             return <div className="text-right font-medium">{row.getValue("consultancy")}</div>
@@ -159,7 +161,13 @@ export function DataTableDemo() {
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
-
+    const arrIncludes: FilterFn<any> = (
+        row,
+        columnId: string,
+        filterValue: unknown
+    ) => {
+        return row.getValue<unknown[]>(columnId)?.includes(filterValue)
+    }
     const table = useReactTable({
         data,
         columns,
@@ -171,6 +179,18 @@ export function DataTableDemo() {
         getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
+        filterFns: {
+            myCustomFilter: (rows, columnIds, filterValue) => {
+                for (var i = 0; i < filterValue.length; i++) {
+                    if (filterValue[i] == (rows.getValue(columnIds) as string).toLowerCase()) {
+                        return true
+                    }
+                }
+
+                return false
+
+            },
+        },
         state: {
             sorting,
             columnFilters,
@@ -185,7 +205,9 @@ export function DataTableDemo() {
     })
 
 
-
+    React.useEffect(() => {
+        table.getColumn("consultancy")?.setFilterValue(filter.map(e => e.name.toLowerCase()))
+    }, [filter])
 
     return (
         <div className="w-full">

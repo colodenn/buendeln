@@ -17,7 +17,7 @@ import {
 import locations from "public/locations.json"
 import { Pin, PinIcon } from "lucide-react"
 import { DataTableDemo } from "./data-table"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { create } from 'zustand'
 
@@ -112,7 +112,7 @@ companiesforcluster.sort((a, b) => a.id.localeCompare(b.id))
 
 
 export default function ClusterPage() {
-    const { add, clear } = useStore()
+    const { filter, add, clear } = useStore()
     const [consultancyFilter, setConsultancyFilter] = useState([{
         name: "Orbis AG"
     }, {
@@ -161,9 +161,10 @@ export default function ClusterPage() {
 
 
 
+
     return (
         <>
-            <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-12">
+            <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-8">
                 <div className="col-span-2 row-span-4   rounded-lg bg-white p-8 shadow-lg">
                     <ResponsiveScatterPlot
                         colors={plotColors}
@@ -267,8 +268,12 @@ export default function ClusterPage() {
 
                     </Map >
                 </div>
-                <div className="col-span-4 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
+                <div className="col-span-2 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
                     <DataTableDemo />
+                </div>
+                <div className="col-span-1 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
+                </div>
+                <div className="col-span-1 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
                 </div>
             </div>
         </>
