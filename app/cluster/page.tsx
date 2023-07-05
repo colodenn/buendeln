@@ -29,6 +29,7 @@ type ConsultancyFilter = {
     filter: Consultancy[]
     add: (s: Consultancy) => void
     remove: (a: Consultancy) => void
+    clear: () => void
 }
 
 export const useStore = create<ConsultancyFilter>()((set) => ({
@@ -52,6 +53,7 @@ export const useStore = create<ConsultancyFilter>()((set) => ({
     )
     ,
     remove: (s) => set((state) => ({ filter: state.filter.filter(pre => pre.name != s.name) })),
+    clear: () => set((state) => ({ filter: [] }))
 
 }))
 
@@ -110,7 +112,7 @@ companiesforcluster.sort((a, b) => a.id.localeCompare(b.id))
 
 
 export default function ClusterPage() {
-    const { add } = useStore()
+    const { add, clear } = useStore()
     const [consultancyFilter, setConsultancyFilter] = useState([{
         name: "Orbis AG"
     }, {
@@ -126,6 +128,7 @@ export default function ClusterPage() {
             resetHighlight()
             resetCompanies()
             setCurrentCompany("")
+            clear()
             return
         }
 
@@ -140,6 +143,12 @@ export default function ClusterPage() {
             return company.color == id ? {...company} : {...company, color: "#AAAAAA"}
         }))
 
+        clear()
+        locations.companies.forEach((company) => {
+            if(company.color == id){
+                add({name: company.name})
+            }
+        })
     }
 
     function resetHighlight(){
