@@ -1057,9 +1057,10 @@ const data = [
 const companiesforcluster = locations.companies.map((company) => {
     return {
         "id": company.color,
-        "name": "test",
+        "name": company.name,
         "data": [
             {
+                "name": company.name,
                 "x": company.position[0],
                 "y": company.position[1],
             }
@@ -1086,6 +1087,7 @@ export default function ClusterPage() {
                         axisTop={null}
                         axisRight={null}
                         nodeSize={20}
+                        tooltip={node => <div className="cursor-pointer p-2 font-medium bg-white shadow rounded">{node.node.data.name}</div>}
                         axisBottom={{
                             tickSize: 5,
                             tickPadding: 5,
