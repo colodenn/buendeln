@@ -17,6 +17,47 @@ import {
 import locations from "public/locations.json"
 import { Pin, PinIcon } from "lucide-react"
 import { DataTableDemo } from "./data-table"
+import { useState } from "react"
+
+import { create } from 'zustand'
+
+type Consultancy = {
+    name: string
+}
+
+type ConsultancyFilter = {
+    filter: Consultancy[]
+    add: (s: Consultancy) => void
+    remove: (a: Consultancy) => void
+}
+
+export const useStore = create<ConsultancyFilter>()((set) => ({
+    filter: [{ name: "Orbis AG" }],
+    add: (s) => set((state) => {
+        let found = false
+        for (var i = 0; i < state.filter.length; i++) {
+            if (state.filter[i].name == s.name) {
+                found = true
+                break
+            }
+        }
+        if (found) {
+            console.log("included")
+            return { filter: state.filter.filter(pre => pre.name != s.name) }
+        } else {
+
+            return { filter: state.filter.concat(s) }
+        }
+    }
+    )
+    ,
+    remove: (s) => set((state) => ({ filter: state.filter.filter(pre => pre.name != s.name) })),
+
+}))
+
+
+
+
 const color = {
     "0": "#7570b3",
     "1": "#1b9e77",
@@ -25,9 +66,6 @@ const color = {
     "4": "#666666",
     "5": "#1a1a1a"
 }
-const colors = ["#7570b3", "#1b9e77", "#d95f02", "#e7298a", "#666666", "#1a1a1a"]
-
-
 
 
 interface companyEntry {
@@ -42,6 +80,7 @@ interface companyEntry {
 }
 
 const companiesforcluster: companyEntry[] = [];
+
 
 locations.companies.forEach((company) => {
     let comp = companiesforcluster.find((comp) => comp.id === company.color);
@@ -68,14 +107,25 @@ locations.companies.forEach((company) => {
     }
 })
 
+
+
+
 export default function ClusterPage() {
+    const { add } = useStore()
+    const [consultancyFilter, setConsultancyFilter] = useState([{
+        name: "Orbis AG"
+    }, {
+        name: "Pikon"
+    }])
+
+
 
     return (
         <>
             <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-12">
                 <div className="col-span-2 row-span-4   rounded-lg bg-white p-8 shadow-lg">
                     <ResponsiveScatterPlot
-                        colors={colors}
+                        colors={{ scheme: 'dark2' }}
                         data={companiesforcluster}
                         margin={{ top: 60, right: 140, bottom: 70, left: 90 }}
                         xScale={{ type: 'linear', min: 'auto', max: 'auto' }}
@@ -86,17 +136,21 @@ export default function ClusterPage() {
                         axisTop={null}
                         axisRight={null}
                         nodeSize={20}
-                        // nodeComponent={(props) => (
-                        //     <animated.circle
-                        //         className={"cursor-pointer"}
-                        //         cx={props.style.x}
-                        //         cy={props.style.y}
-                        //         r={props.style.size.to(size => size / 2)}
-                        //         fill={props.node.data.color}
-                        //         style={{ mixBlendMode: props.blendMode }}
-                        //     />
-                        // )
-                        // }
+                        onClick={(node, event) => {
+                            add({ name: node.data.name })
+                        }}
+                        nodeComponent={(props, index) => (
+                            <animated.circle
+                                key={index}
+                                className={"cursor-pointer"}
+                                cx={props.style.x}
+                                cy={props.style.y}
+                                r={props.style.size.to(size => size / 2)}
+                                fill={props.node.data.color}
+                                style={{ mixBlendMode: props.blendMode }}
+                            />
+                        )
+                        }
                         tooltip={node => <div className="cursor-pointer p-2 font-medium bg-white shadow rounded">{node.node.data.name}</div>}
                         axisBottom={{
                             tickSize: 5,
@@ -151,8 +205,9 @@ export default function ClusterPage() {
                             6.9
                         ]}
                     >
-                        {locations.companies.map((company) => (
+                        {locations.companies.map((company, index) => (
                             <Marker
+                                key={index}
                                 width={40}
                                 anchor={[company.location.lat, company.location.long]}
                                 color={"#123123"}
@@ -170,7 +225,7 @@ export default function ClusterPage() {
                     </Map >
                 </div>
                 <div className="col-span-4 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
-                    <DataTableDemo />
+                    <DataTableDemo consultancyFilter={consultancyFilter} />
                 </div>
             </div>
         </>

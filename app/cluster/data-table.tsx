@@ -44,6 +44,7 @@ import {
 } from "@/components/ui/table"
 import { Cross, X } from "lucide-react"
 import kunden from "public/companies.json"
+import { useStore } from "./page"
 const data: Company[] = kunden
 
 export type Company = {
@@ -143,8 +144,12 @@ export const columns: ColumnDef<Company>[] = [
         },
     },
 ]
+type consultancyFilter = {
+    name: string
+}
 
 export function DataTableDemo() {
+    const { filter, add, remove } = useStore()
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -190,8 +195,10 @@ export function DataTableDemo() {
                     }
                     className="max-w-sm"
                 />
-                <div className="ml-8">
-                    <Badge className="bg-[#7570b3] cursor-pointer flex items-center"><p>Orbis AG</p> <X className="w-4 ml-2" /></Badge>
+                <div className="ml-8 flex space-x-2">
+                    {filter.map((fi, index) => (
+                        <Badge key={index} onClick={() => remove(fi)} className="bg-[#7570b3] cursor-pointer flex items-center"><p>{fi.name}</p> <X className="w-4 ml-2" /></Badge>
+                    ))}
                 </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
