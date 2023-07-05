@@ -25,6 +25,7 @@ const color = {
     "4": "#666666",
     "5": "#1a1a1a"
 }
+const colors = ["#7570b3", "#1b9e77", "#d95f02", "#e7298a", "#666666", "#1a1a1a"]
 
 
 
@@ -74,7 +75,7 @@ export default function ClusterPage() {
             <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-12">
                 <div className="col-span-2 row-span-4   rounded-lg bg-white p-8 shadow-lg">
                     <ResponsiveScatterPlot
-                        colors={{ scheme: 'dark2' }}
+                        colors={colors}
                         data={companiesforcluster}
                         margin={{ top: 60, right: 140, bottom: 70, left: 90 }}
                         xScale={{ type: 'linear', min: 'auto', max: 'auto' }}
@@ -85,17 +86,17 @@ export default function ClusterPage() {
                         axisTop={null}
                         axisRight={null}
                         nodeSize={20}
-                        nodeComponent={(props) => (
-                            <animated.circle
-                                className={"cursor-pointer"}
-                                cx={props.style.x}
-                                cy={props.style.y}
-                                r={props.style.size.to(size => size / 2)}
-                                fill={props.node.data.color}
-                                style={{ mixBlendMode: props.blendMode }}
-                            />
-                        )
-                        }
+                        // nodeComponent={(props) => (
+                        //     <animated.circle
+                        //         className={"cursor-pointer"}
+                        //         cx={props.style.x}
+                        //         cy={props.style.y}
+                        //         r={props.style.size.to(size => size / 2)}
+                        //         fill={props.node.data.color}
+                        //         style={{ mixBlendMode: props.blendMode }}
+                        //     />
+                        // )
+                        // }
                         tooltip={node => <div className="cursor-pointer p-2 font-medium bg-white shadow rounded">{node.node.data.name}</div>}
                         axisBottom={{
                             tickSize: 5,
