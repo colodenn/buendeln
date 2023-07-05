@@ -41,7 +41,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <div className="grid-pattern relative flex min-h-screen flex-col bg-[#fafafb] ">
               <div className="flex-1">{children}</div>
             </div>
