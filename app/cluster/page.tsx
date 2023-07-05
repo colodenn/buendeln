@@ -1054,21 +1054,41 @@ const data = [
     }
 ]
 
-const companiesforcluster = locations.companies.map((company) => {
-    return {
-        "id": company.color,
-        "name": company.name,
-        "data": [
-            {
-                "name": company.name,
-                "x": company.position[0],
-                "y": company.position[1],
-            }
-        ]
+interface companyEntry {
+    id: string;
+    name: string;
+    data: [{
+        name: string;
+        x: number;
+        y: number;
+    }]
+}
 
+const companiesforcluster: companyEntry[] = [];
 
+locations.companies.forEach((company) => {
+    let comp = companiesforcluster.find((comp) => comp.id === company.color);
+    if (comp) {
+        comp.data.push({
+            name: company.name,
+            x: company.position[0],
+            y: company.position[1]
+        })
+    } else {
+        companiesforcluster.push({
+            id: company.color,
+            name: company.name,
+            data: [
+                {
+                    name: company.name,
+                    x: company.position[0],
+                    y: company.position[1]
+                }
+            ]
+        })
     }
 })
+
 export default function ClusterPage() {
 
     return (
