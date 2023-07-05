@@ -1143,6 +1143,7 @@ export default function ClusterPage() {
                                 width={40}
                                 anchor={[company.location.lat, company.location.long]}
                                 color={"#123123"}
+                                offset={[-10, -20]}
                             >
                                 <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
                                     <Pin style={{ "color": color[company.color] }} />
