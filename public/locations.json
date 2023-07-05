@@ -1,7 +1,10 @@
 {
+    
     "companies": [
         {
             "name": "IMA GmbH - Marketing & Consulting",
+            "color": "1",
+            "position": [0.20192029133130035, 0.3312955013416259],
             "industry": "consultancy",
             "size": "big",
             "location": {
@@ -11,6 +14,8 @@
         },
         {
             "name": "Dreikant Consulting",
+            "color":"2",
+            "position": [0.8850717953109946, -0.5625958834611223],
             "industry": "consultancy",
             "size": "small",
             "location": {
@@ -20,6 +25,8 @@
         },
         {
             "name": "Audimus Consulting",
+            "color": "0",
+            "position": [-0.372081508352802, -0.4568361630982932],
             "industry": "consultancy",
             "size": "medium",
             "location": {
@@ -29,6 +36,8 @@
         },
         {
             "name": "PPMB Prozess- und Projekt-Management Beratung Dr. Schmidt GmbH",
+            "color": "0",
+            "position": [-0.2956389905105685, -0.2645458802996269],
             "industry": "consultancy",
             "size": "big",
             "location": {
@@ -38,6 +47,8 @@
         },
         {
             "name": "amotiq solutions GmbH",
+            "color": "3",
+            "position": [0.1164184208042348, -0.06849788202868477],
             "industry": "consultancy",
             "size": "medium",
             "location": {
@@ -47,6 +58,8 @@
         },
         {
             "name": "PIKON International Consulting Group GmbH",
+            "color": "0",
+            "position": [-0.4695970580073554, 0.0019962288216929056],
             "industry": "consultancy",
             "size": "big",
             "location": {
@@ -56,6 +69,8 @@
         },
         {
             "name": "Scheer GmbH",
+            "color": "3",
+            "position": [-0.02092507238570108, 0.00681824986589496],
             "industry": "consultancy",
             "size": "big",
             "location": {
@@ -65,6 +80,8 @@
         },
         {
             "name": "Prego Services GmbH",
+            "color":"1",
+            "position": [0.4046758939046751, 0.7087385967236391],
             "industry": "consultancy",
             "size": "medium",
             "location": {
@@ -74,6 +91,7 @@
         },
         {
             "name": "Orbis AG",
+            "color": "0", "position": [-0.5252304384916082, 0.2043735850080153],
             "industry": "consultancy",
             "size": "big",
             "location": {
@@ -83,6 +101,8 @@
         },
         {
             "name": "DHC Business Solutions GmbH & Co. KG",
+            "color": "3",
+            "position": [0.27734909478198794, 0.06777621268053982],
             "industry": "consultancy",
             "size": "medium",
             "location": {
@@ -90,95 +110,18 @@
                 "long": 7.002389
             }
         },
-        {
-            "name": "kabea GmbH",
-            "industry": "consultancy",
-            "size": "small",
-            "location": {
-                "lat": 49.341722,
-                "long": 7.200056
-            }
-        },
-        {
-            "name": "DOMO NOVA GmbH",
-            "industry": "consultancy",
-            "size": "small",
-            "location": {
-                "lat": 49.000806,
-                "long": 8.424139
-            }
-        },
-        {
-            "name": "TFI Consult GmbH",
-            "industry": "consultancy",
-            "size": "small",
-            "location": {
-                "lat": 49.346311,
-                "long": 7.178346
-            }
-        },
-        {
-            "name": "Consor4 GmbH",
-            "industry": "consultancy",
-            "size": "small",
-            "location": {
-                "lat": 49.294167,
-                "long": 7.321472
-            }
-        },
-        {
-            "name": "PPG Perspektive Personalmanagement GmbH",
-            "industry": "consultancy",
-            "size": "medium",
-            "location": {
-                "lat": 49.329583,
-                "long": 7.279722
-            }
-        },
-        {
-            "name": "awikos AG",
-            "industry": "consultancy",
-            "size": "small",
-            "location": {
-                "lat": 49.340111,
-                "long": 7.371167
-            }
-        },
-        {
-            "name": "Werth-Solutions GmbH",
-            "industry": "consultancy",
-            "size": "small",
-            "location": {
-                "lat": 49.3115,
-                "long": 6.757806
-            }
-        },
+        
         {
             "name": "UWS Unternehmensberatung GmbH",
+            "color": "0",
+            "position": [-0.2019624283851577, 0.031477434446319445],
             "industry": "consultancy",
             "size": "big",
             "location": {
                 "lat": 49.310194,
                 "long": 6.736083
             }
-        },
-        {
-            "name": "Thibera Consulting GmbH",
-            "industry": "consultancy",
-            "size": "medium",
-            "location": {
-                "lat": 49.282417,
-                "long": 7.1205
-            }
-        },
-        {
-            "name": "POS Consulting + Service GmbH",
-            "industry": "consultancy",
-            "size": "medium",
-            "location": {
-                "lat": 49.206028,
-                "long": 7.104389
-            }
         }
+       
     ]
 }

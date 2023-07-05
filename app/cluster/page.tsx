@@ -15,6 +15,16 @@ import {
 } from "@/components/ui/hover-card"
 import locations from "public/locations.json"
 import { Pin, PinIcon } from "lucide-react"
+const color = {
+    "0": "#1b9e77",
+    "1": "#d95f02",
+    "2": "#7570b3",
+    "3": "#e7298a",
+    "4": "#666666",
+    "5": "#1a1a1a"
+}
+
+
 
 const data = [
     {
@@ -1044,21 +1054,38 @@ const data = [
     }
 ]
 
+const companiesforcluster = locations.companies.map((company) => {
+    return {
+        "id": company.color,
+        "name": "test",
+        "data": [
+            {
+                "x": company.position[0],
+                "y": company.position[1],
+            }
+        ]
+
+
+    }
+})
 export default function ClusterPage() {
+
     return (
         <>
             <div className="flex h-screen w-full items-center justify-around space-x-12 p-12">
                 <div className="h-full w-6/12 rounded-lg bg-white p-8 shadow-lg">
                     <ResponsiveScatterPlot
-                        data={data}
+                        colors={{ scheme: 'dark2' }}
+                        data={companiesforcluster}
                         margin={{ top: 60, right: 140, bottom: 70, left: 90 }}
-                        xScale={{ type: 'linear', min: 0, max: 'auto' }}
+                        xScale={{ type: 'linear', min: 'auto', max: 'auto' }}
                         xFormat=">-.2f"
-                        yScale={{ type: 'linear', min: 0, max: 'auto' }}
+                        yScale={{ type: 'linear', min: "auto", max: 'auto' }}
                         yFormat=">-.2f"
                         blendMode="multiply"
                         axisTop={null}
                         axisRight={null}
+                        nodeSize={20}
                         axisBottom={{
                             tickSize: 5,
                             tickPadding: 5,
@@ -1116,8 +1143,8 @@ export default function ClusterPage() {
                                 color={"#123123"}
                             >
                                 <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
-                                    <Pin />
-                                    <p className="text-center group-hover:visible">{company.name}</p>
+                                    <Pin style={{ "color": color[company.color] }} />
+                                    <p className="text-center group-hover:visible" >{company.name}</p>
                                 </div>
                             </Marker>
                         )
