@@ -66,6 +66,7 @@ const color = {
     "4": "#666666",
     "5": "#1a1a1a"
 }
+const colors = [{id: "0", color: "#7570b3"}, {id: "1", color: "#1b9e77"}, {id: "2", color: "#d95f02"}, {id: "3", color: "#e7298a"}, {id: "4", color: "#666666"}, {id: "5", color: "#1a1a1a"}]
 
 
 interface companyEntry {
@@ -75,7 +76,6 @@ interface companyEntry {
         name: string;
         x: number;
         y: number;
-        color: string;
     }]
 }
 
@@ -89,7 +89,6 @@ locations.companies.forEach((company) => {
             name: company.name,
             x: company.position[0],
             y: company.position[1],
-            color: color[company.color]
         })
     } else {
         companiesforcluster.push({
@@ -100,12 +99,12 @@ locations.companies.forEach((company) => {
                     name: company.name,
                     x: company.position[0],
                     y: company.position[1],
-                    color: color[company.color]
                 }
             ]
         })
     }
 })
+companiesforcluster.sort((a, b) => a.id.localeCompare(b.id))
 
 
 
@@ -118,6 +117,30 @@ export default function ClusterPage() {
         name: "Pikon"
     }])
 
+    const [companies, setCompanies] = useState(locations.companies)
+    const [plotColors, setPlotColors] = useState(Object.values(color))
+
+    function highlightCompany(id: string){
+        resetHighlight()
+        setPlotColors(colors.map((color) => {
+            return color.id == id ? color.color : "#AAAAAA"
+        }))
+
+        resetCompanies()
+        setCompanies(locations.companies.map((company) => {
+            return company.color == id ? {...company} : {...company, color: "#AAAAAA"}
+        }))
+
+    }
+
+    function resetHighlight(){
+        setPlotColors(Object.values(color))
+    }
+
+    function resetCompanies(){
+        setCompanies(locations.companies)
+    }
+
 
 
     return (
@@ -125,7 +148,7 @@ export default function ClusterPage() {
             <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-12">
                 <div className="col-span-2 row-span-4   rounded-lg bg-white p-8 shadow-lg">
                     <ResponsiveScatterPlot
-                        colors={{ scheme: 'dark2' }}
+                        colors={plotColors}
                         data={companiesforcluster}
                         margin={{ top: 60, right: 140, bottom: 70, left: 90 }}
                         xScale={{ type: 'linear', min: 'auto', max: 'auto' }}
@@ -145,9 +168,8 @@ export default function ClusterPage() {
                                 className={"cursor-pointer"}
                                 cx={props.style.x}
                                 cy={props.style.y}
+                                fill={props.style.color}
                                 r={props.style.size.to(size => size / 2)}
-                                fill={props.node.data.color}
-                                style={{ mixBlendMode: props.blendMode }}
                             />
                         )
                         }
@@ -181,7 +203,10 @@ export default function ClusterPage() {
                                 itemsSpacing: 5,
                                 itemDirection: 'left-to-right',
                                 symbolSize: 12,
-                                onClick: function noRefCheck() { },
+                                onClick: (prop) => {
+                                    console.log(prop)
+                                    highlightCompany(prop.id.toString())
+                                },
                                 symbolShape: 'circle',
                                 effects: [
                                     {
@@ -205,7 +230,7 @@ export default function ClusterPage() {
                             6.9
                         ]}
                     >
-                        {locations.companies.map((company, index) => (
+                        {companies.map((company, index) => (
                             <Marker
                                 key={index}
                                 width={40}
@@ -214,7 +239,7 @@ export default function ClusterPage() {
                                 offset={[-10, -20]}
                             >
                                 <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
-                                    <Pin style={{ "color": color[company.color] }} />
+                                    <Pin style={{ "color": color[company.color]}} />
                                     <p className="text-center group-hover:visible" >{company.name}</p>
                                 </div>
                             </Marker>
