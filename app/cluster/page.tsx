@@ -2,7 +2,7 @@
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
 import { animated } from '@react-spring/web'
 
@@ -16,12 +16,14 @@ import {
 } from "@/components/ui/hover-card"
 import locations from "public/locations.json"
 import customers from "public/companies.json"
-import { Pin, PinIcon } from "lucide-react"
+import { ChevronDownIcon, Pin, PinIcon } from "lucide-react"
 import { DataTableDemo } from "./data-table"
 import { useEffect, useState } from "react"
 
 import { create } from 'zustand'
 import { OpacityIcon } from "@radix-ui/react-icons"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { flushSync } from "react-dom"
 
 type Consultancy = {
     name: string
@@ -134,6 +136,31 @@ export default function ClusterPage() {
 
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([])
 
+    const [selectedIndustries, setSelectedIndustries] = useState<{[key: string]: boolean}>(Object.fromEntries(industries.map((industry) => {
+        return [industry, false]
+    })))
+
+    function resetIndustries() {
+        setSelectedIndustries(Object.fromEntries(industries.map((industry) => {
+            return [industry, false]
+        })))
+    }
+
+    function filterByIndustry() {
+        const companies:string[] = []
+        customers.forEach((customer) => {
+            if (industrySelected(customer.industry) && !companies.includes(customer.consultancy)) {
+                companies.push(customer.consultancy)
+            }
+        })
+        setSelectedClusters([])
+        setSelectedCompanies(companies)
+        update(companies)
+    }
+
+    function industrySelected(industry: string) {
+        return selectedIndustries[industry]
+    }
 
     function clearSelectedCompanies() {
         setSelectedCompanies([])
@@ -144,6 +171,7 @@ export default function ClusterPage() {
         if (!selectedCompanies.includes(company)) {
             selectedCompanies.push(company)
         }
+        resetIndustries()
         update()
     }
 
@@ -151,6 +179,7 @@ export default function ClusterPage() {
         if (selectedCompanies.includes(company)) {
             selectedCompanies.splice(selectedCompanies.indexOf(company), 1)
         }
+        resetIndustries()
         update()
     }
 
@@ -173,17 +202,25 @@ export default function ClusterPage() {
         update()
     }
 
-    function update() {
+    function update(companies?: string[]) {
+        console.log(selectedCompanies)
         add({ name: "cluster" })
         remove({ name: "cluster" })
 
         clear()
-        selectedCompanies.forEach((company) => {
-            add({ name: company })
-        })
+        if (companies) {
+            companies.forEach((company) => {
+                add({ name: company })
+            })
+        } else {
+            selectedCompanies.forEach((company) => {
+                add({ name: company })
+            })
+        }
     }
 
     function companySelected(company: string) {
+        console.log(company)
         return selectedCompanies.includes(company) || selectedCompanies.length == 0
     }
 
@@ -194,10 +231,35 @@ export default function ClusterPage() {
         <>
             <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-8">
                 <div className="col-span-2 row-span-4   rounded-lg bg-white p-8 shadow-lg">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="ml-auto">
+                            Industries <ChevronDownIcon className="ml-2 h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        {Object.keys(selectedIndustries).map((industry) => {
+                            return <DropdownMenuCheckboxItem
+                                key={industry}
+                                className="capitalize"
+                                checked={industrySelected(industry)}
+                                onCheckedChange={() =>{
+                                    if(industrySelected(industry)) {
+                                        selectedIndustries[industry] = false
+                                    }else{
+                                        selectedIndustries[industry] = true
+                                    }
+                                    filterByIndustry()}}
+                                >
+                                {industry}
+                            </DropdownMenuCheckboxItem>
+                            })} 
+                    </DropdownMenuContent>
+                </DropdownMenu>
                     <ResponsiveScatterPlot
                         colors={plotColors}
                         data={companiesforcluster}
-                        margin={{ top: 100, right: 100, bottom: 100, left: 100 }}
+                        margin={{ top: 50, right: 100, bottom: 100, left: 100 }}
                         xScale={{ type: 'linear', min: 'auto', max: 'auto' }}
                         xFormat=">-.2f"
                         yScale={{ type: 'linear', min: "auto", max: 'auto' }}
