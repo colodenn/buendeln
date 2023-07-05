@@ -1116,6 +1116,7 @@ export default function ClusterPage() {
                                 itemsSpacing: 5,
                                 itemDirection: 'left-to-right',
                                 symbolSize: 12,
+                                onClick: function noRefCheck() { },
                                 symbolShape: 'circle',
                                 effects: [
                                     {
