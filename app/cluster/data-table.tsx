@@ -19,6 +19,7 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
+
 } from "@tanstack/react-table"
 
 import { Button } from "@/components/ui/button"
@@ -42,44 +43,8 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Cross, X } from "lucide-react"
-
-const data: Company[] = [
-    {
-        id: "m5gr84i9",
-        name: "BMW",
-        "industry": "Pornos",
-        "consultancy": "Cornelius Consulting",
-        "endcustomer": "B2B & B2C"
-    },
-    {
-        id: "3u1reuv4",
-        name: "SaarStahl",
-        "industry": "Pornos",
-        "consultancy": "Cornelius Consulting",
-        "endcustomer": "B2B & B2C"
-    },
-    {
-        id: "derv1ws0",
-        name: "Karlsberg",
-        "industry": "Pornos",
-        "consultancy": "Cornelius Consulting",
-        "endcustomer": "B2B & B2C"
-    },
-    {
-        id: "5kma53ae",
-        name: "Cornelius",
-        "industry": "Pornos",
-        "consultancy": "Cornelius Consulting",
-        "endcustomer": "B2B & B2C"
-    },
-    {
-        id: "bhqecj4p",
-        name: "Yannkick",
-        "industry": "Pornos",
-        "consultancy": "Cornelius Consulting",
-        "endcustomer": "B2B & B2C"
-    },
-]
+import kunden from "public/companies.json"
+const data: Company[] = kunden
 
 export type Company = {
     id: string
@@ -205,11 +170,18 @@ export function DataTableDemo() {
             columnVisibility,
             rowSelection,
         },
+        initialState: {
+            pagination: {
+                pageSize: 4,
+            },
+        }
     })
+
+
 
     return (
         <div className="w-full">
-            <div className="flex items-center py-2">
+            <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter companies..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
