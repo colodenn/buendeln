@@ -66,7 +66,7 @@ const color = {
     "4": "#666666",
     "5": "#1a1a1a"
 }
-const colors = [{id: "0", color: "#7570b3"}, {id: "1", color: "#1b9e77"}, {id: "2", color: "#d95f02"}, {id: "3", color: "#e7298a"}, {id: "4", color: "#666666"}, {id: "5", color: "#1a1a1a"}]
+const colors = [{ id: "0", color: "#7570b3" }, { id: "1", color: "#1b9e77" }, { id: "2", color: "#d95f02" }, { id: "3", color: "#e7298a" }, { id: "4", color: "#666666" }, { id: "5", color: "#1a1a1a" }]
 
 
 interface companyEntry {
@@ -111,18 +111,13 @@ companiesforcluster.sort((a, b) => a.id.localeCompare(b.id))
 
 export default function ClusterPage() {
     const { add } = useStore()
-    const [consultancyFilter, setConsultancyFilter] = useState([{
-        name: "Orbis AG"
-    }, {
-        name: "Pikon"
-    }])
 
     const [companies, setCompanies] = useState(locations.companies)
     const [plotColors, setPlotColors] = useState(Object.values(color))
-    const  [currentCompany, setCurrentCompany] = useState("")
+    const [currentCompany, setCurrentCompany] = useState("")
 
-    function highlightCompany(id: string){
-        if(currentCompany == id){
+    function highlightCompany(id: string) {
+        if (currentCompany == id) {
             resetHighlight()
             resetCompanies()
             setCurrentCompany("")
@@ -137,16 +132,16 @@ export default function ClusterPage() {
 
         resetCompanies()
         setCompanies(locations.companies.map((company) => {
-            return company.color == id ? {...company} : {...company, color: "#AAAAAA"}
+            return company.color == id ? { ...company } : { ...company, color: "#AAAAAA" }
         }))
 
     }
 
-    function resetHighlight(){
+    function resetHighlight() {
         setPlotColors(Object.values(color))
     }
 
-    function resetCompanies(){
+    function resetCompanies() {
         setCompanies(locations.companies)
     }
 
@@ -159,7 +154,7 @@ export default function ClusterPage() {
                     <ResponsiveScatterPlot
                         colors={plotColors}
                         data={companiesforcluster}
-                        margin={{ top: 60, right: 140, bottom: 70, left: 90 }}
+                        margin={{ top: 100, right: 100, bottom: 100, left: 100 }}
                         xScale={{ type: 'linear', min: 'auto', max: 'auto' }}
                         xFormat=">-.2f"
                         yScale={{ type: 'linear', min: "auto", max: 'auto' }}
@@ -248,7 +243,7 @@ export default function ClusterPage() {
                                 offset={[-10, -20]}
                             >
                                 <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
-                                    <Pin style={{ "color": color[company.color]}} />
+                                    <Pin style={{ "color": color[company.color] }} />
                                     <p className="text-center group-hover:visible" >{company.name}</p>
                                 </div>
                             </Marker>
@@ -259,7 +254,7 @@ export default function ClusterPage() {
                     </Map >
                 </div>
                 <div className="col-span-4 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
-                    <DataTableDemo consultancyFilter={consultancyFilter} />
+                    <DataTableDemo />
                 </div>
             </div>
         </>

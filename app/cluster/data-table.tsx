@@ -45,6 +45,7 @@ import {
 import { Cross, X } from "lucide-react"
 import kunden from "public/companies.json"
 import { useStore } from "./page"
+import { table } from "console"
 const data: Company[] = kunden
 
 export type Company = {
@@ -150,6 +151,7 @@ type consultancyFilter = {
 
 export function DataTableDemo() {
     const { filter, add, remove } = useStore()
+
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -181,6 +183,7 @@ export function DataTableDemo() {
             },
         }
     })
+
 
 
 
