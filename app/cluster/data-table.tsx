@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { Badge } from "@/components/ui/badge"
+
 import {
     CaretSortIcon,
     ChevronDownIcon,
@@ -39,6 +41,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { Cross, X } from "lucide-react"
 
 const data: Company[] = [
     {
@@ -215,6 +218,9 @@ export function DataTableDemo() {
                     }
                     className="max-w-sm"
                 />
+                <div className="ml-8">
+                    <Badge className="bg-[#7570b3] cursor-pointer flex items-center"><p>Orbis AG</p> <X className="w-4 ml-2" /></Badge>
+                </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
