@@ -20,6 +20,7 @@ import { DataTableDemo } from "./data-table"
 import { useEffect, useState } from "react"
 
 import { create } from 'zustand'
+import { OpacityIcon } from "@radix-ui/react-icons"
 
 type Consultancy = {
     name: string
@@ -121,31 +122,41 @@ export default function ClusterPage() {
 
     const [companies, setCompanies] = useState(locations.companies)
     const [plotColors, setPlotColors] = useState(Object.values(color))
-    const [currentCompany, setCurrentCompany] = useState("")
+    const [selectedClusters, setSelectedClusters] = useState<string[]>([])
 
-    function highlightCompany(id: string) {
-        if (currentCompany == id) {
+    function addCluster(cluster: string) {
+        if (!selectedClusters.includes(cluster)) {
+            selectedClusters.push(cluster)
+        }else{
+            selectedClusters.splice(selectedClusters.indexOf(cluster), 1)
+        }
+        updateHighlights()
+    }
+
+    function updateHighlights() {
+        if(selectedClusters.length == 0) {
             resetHighlight()
             resetCompanies()
-            setCurrentCompany("")
             clear()
             return
         }
 
-        setCurrentCompany(id)
         resetHighlight()
-        setPlotColors(colors.map((color) => {
-            return color.id == id ? color.color : "#AAAAAA"
-        }))
-
         resetCompanies()
+
+        // set highlights in scatterplot
+        setPlotColors(colors.map((color) => {
+            return selectedClusters.includes(color.id) ? color.color : "#AAAAAA"
+        }))
+        // set highlights in map
         setCompanies(locations.companies.map((company) => {
-            return company.color == id ? { ...company } : { ...company, color: "#AAAAAA" }
+            return selectedClusters.includes(company.color) ? { ...company } : { ...company, color: "#AAAAAA" }
         }))
 
+        // set selected companies in datatable
         clear()
         locations.companies.forEach((company) => {
-            if (company.color == id) {
+            if (selectedClusters.includes(company.color)) {
                 add({ name: company.name })
             }
         })
@@ -223,8 +234,7 @@ export default function ClusterPage() {
                                 itemDirection: 'left-to-right',
                                 symbolSize: 12,
                                 onClick: (prop) => {
-                                    console.log(prop)
-                                    highlightCompany(prop.id.toString())
+                                    addCluster(prop.id.toString())
                                 },
                                 symbolShape: 'circle',
                                 effects: [
@@ -258,8 +268,8 @@ export default function ClusterPage() {
                                 offset={[-10, -20]}
                             >
                                 <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
-                                    <Pin style={{ "color": color[company.color] }} />
-                                    <p className="text-center group-hover:visible" >{company.name}</p>
+                                    <Pin style={{ color: company.color=="#AAAAAA" ? "#000000" : color[company.color], opacity: company.color=="#AAAAAA" ? 0.35 : 1.0}} />
+                                    <p className="text-center group-hover:visible" style={{opacity: company.color=="#AAAAAA" ? 0.0 : 1.0}}>{company.name}</p>
                                 </div>
                             </Marker>
                         )
