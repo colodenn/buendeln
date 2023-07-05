@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/hover-card"
 import locations from "public/locations.json"
 import { Pin, PinIcon } from "lucide-react"
+import { DataTableDemo } from "./data-table"
 const color = {
     "0": "#7570b3",
     "1": "#1b9e77",
@@ -70,8 +71,8 @@ export default function ClusterPage() {
 
     return (
         <>
-            <div className="flex h-screen w-full items-center justify-around space-x-12 p-12">
-                <div className="h-full w-6/12 rounded-lg bg-white p-8 shadow-lg">
+            <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-12">
+                <div className="col-span-2 row-span-4   rounded-lg bg-white p-8 shadow-lg">
                     <ResponsiveScatterPlot
                         colors={{ scheme: 'dark2' }}
                         data={companiesforcluster}
@@ -86,6 +87,7 @@ export default function ClusterPage() {
                         nodeSize={20}
                         nodeComponent={(props) => (
                             <animated.circle
+                                className={"cursor-pointer"}
                                 cx={props.style.x}
                                 cy={props.style.y}
                                 r={props.style.size.to(size => size / 2)}
@@ -139,7 +141,7 @@ export default function ClusterPage() {
                         ]}
                     />
                 </div>
-                <div className="h-full w-6/12 overflow-hidden rounded-lg bg-white shadow-lg">
+                <div className="col-span-2 row-span-4  overflow-hidden rounded-lg bg-white shadow-lg">
                     <Map
                         provider={osm}
                         defaultZoom={10.5}
@@ -165,6 +167,9 @@ export default function ClusterPage() {
                         }
 
                     </Map >
+                </div>
+                <div className="col-span-4 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
+                    <DataTableDemo />
                 </div>
             </div>
         </>
