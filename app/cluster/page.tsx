@@ -121,31 +121,41 @@ export default function ClusterPage() {
 
     const [companies, setCompanies] = useState(locations.companies)
     const [plotColors, setPlotColors] = useState(Object.values(color))
-    const [currentCompany, setCurrentCompany] = useState("")
+    const [selectedClusters, setSelectedClusters] = useState<string[]>([])
 
-    function highlightCompany(id: string) {
-        if (currentCompany == id) {
+    function addCluster(cluster: string) {
+        if (!selectedClusters.includes(cluster)) {
+            selectedClusters.push(cluster)
+        }else{
+            selectedClusters.splice(selectedClusters.indexOf(cluster), 1)
+        }
+        updateHighlights()
+    }
+
+    function updateHighlights() {
+        if(selectedClusters.length == 0) {
             resetHighlight()
             resetCompanies()
-            setCurrentCompany("")
             clear()
             return
         }
 
-        setCurrentCompany(id)
         resetHighlight()
-        setPlotColors(colors.map((color) => {
-            return color.id == id ? color.color : "#AAAAAA"
-        }))
-
         resetCompanies()
+
+        // set highlights in scatterplot
+        setPlotColors(colors.map((color) => {
+            return selectedClusters.includes(color.id) ? color.color : "#AAAAAA"
+        }))
+        // set highlights in map
         setCompanies(locations.companies.map((company) => {
-            return company.color == id ? { ...company } : { ...company, color: "#AAAAAA" }
+            return selectedClusters.includes(company.color) ? { ...company } : { ...company, color: "#AAAAAA" }
         }))
 
+        // set selected companies in datatable
         clear()
         locations.companies.forEach((company) => {
-            if (company.color == id) {
+            if (selectedClusters.includes(company.color)) {
                 add({ name: company.name })
             }
         })
@@ -222,8 +232,7 @@ export default function ClusterPage() {
                                 itemDirection: 'left-to-right',
                                 symbolSize: 12,
                                 onClick: (prop) => {
-                                    console.log(prop)
-                                    highlightCompany(prop.id.toString())
+                                    addCluster(prop.id.toString())
                                 },
                                 symbolShape: 'circle',
                                 effects: [
