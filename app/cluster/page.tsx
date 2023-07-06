@@ -353,7 +353,7 @@ export default function ClusterPage() {
         <>
             <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-8">
                 <div className="col-span-2 row-span-4   rounded-lg bg-white p-8 shadow-lg">
-                    <div className="flex flex-row justify-start items-center">
+                    <div className="flex flex-row justify-start items-center space-x-4">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline" className="ml-20">
@@ -380,8 +380,10 @@ export default function ClusterPage() {
                                 })}
                             </DropdownMenuContent>
                         </DropdownMenu>
-                        <h1 className="pl-10 font-bold">Your Cluster: <h1 className="font-thin justify-center items-center pl-10">{clusters[input.industry]}</h1></h1>
-                        <h1 className="pl-10 font-bold">Recommended City: <h1 className="font-thin pl-8">{optimalCity.name}</h1></h1>
+                        <h1 className="font-bold flex items-center">Your Cluster: <h1 className="font-thin justify-center items-center ml-2">{clusters[input.industry]}</h1></h1>
+                        <h1 className="flex items-center font-bold">Recommended City: <h1 className="font-thin ml-2">{optimalCity.name}</h1></h1>
+                        <h1 className="font-bold flex items-center ">Your Company: <h1 className="font-thin ml-2">{input.company}</h1></h1>
+
                     </div>
                     <ResponsiveScatterPlot
                         colors={plotColors}
