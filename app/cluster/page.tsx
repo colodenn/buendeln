@@ -27,6 +27,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { flushSync } from "react-dom"
 import { ResponsivePie } from '@nivo/pie'
 
+import { filterFns } from "@tanstack/react-table"
 
 type Consultancy = {
     name: string
@@ -52,7 +53,6 @@ export const useStore = create<ConsultancyFilter>()((set) => ({
         if (found) {
             return { filter: state.filter.filter(pre => pre.name != s.name) }
         } else {
-
             return { filter: state.filter.concat(s) }
         }
     }
@@ -139,6 +139,10 @@ export default function ClusterPage() {
     const [selectedClusters, setSelectedClusters] = useState<string[]>([])
 
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([])
+
+    useEffect(() => {
+        setSelectedCompanies(filter.map((f) => f.name))
+    }, [filter])
 
     const [selectedIndustries, setSelectedIndustries] = useState<{ [key: string]: boolean }>(Object.fromEntries(industries.map((industry) => {
         return [industry, false]
