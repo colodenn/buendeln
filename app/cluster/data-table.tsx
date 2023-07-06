@@ -45,8 +45,8 @@ import {
 } from "@/components/ui/table"
 import { Cross, X } from "lucide-react"
 import kunden from "public/companies.json"
-import { useStore } from "./page"
 import { table } from "console"
+import { useFilter } from "@/store/filter"
 const data = kunden as Company[]
 
 declare module '@tanstack/table-core' {
@@ -157,7 +157,7 @@ type consultancyFilter = {
 }
 
 export function DataTableDemo() {
-    const { filter, add, remove } = useStore()
+    const { filter, add, remove } = useFilter()
 
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(

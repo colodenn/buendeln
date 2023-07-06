@@ -28,6 +28,7 @@ import { flushSync } from "react-dom"
 import { ResponsivePie } from '@nivo/pie'
 
 import { filterFns } from "@tanstack/react-table"
+import { useFilter } from "@/store/filter"
 
 type Consultancy = {
     name: string
@@ -40,28 +41,7 @@ type ConsultancyFilter = {
     clear: () => void
 }
 
-export const useStore = create<ConsultancyFilter>()((set) => ({
-    filter: [{ name: "Orbis AG" }],
-    add: (s) => set((state) => {
-        let found = false
-        for (var i = 0; i < state.filter.length; i++) {
-            if (state.filter[i].name == s.name) {
-                found = true
-                break
-            }
-        }
-        if (found) {
-            return { filter: state.filter.filter(pre => pre.name != s.name) }
-        } else {
-            return { filter: state.filter.concat(s) }
-        }
-    }
-    )
-    ,
-    remove: (s) => set((state) => ({ filter: state.filter.filter(pre => pre.name != s.name) })),
-    clear: () => set((state) => ({ filter: [] })),
 
-}))
 
 
 
@@ -125,7 +105,7 @@ companiesforcluster.sort((a, b) => a.id.localeCompare(b.id))
 
 
 export default function ClusterPage() {
-    const { filter, add, clear, remove } = useStore()
+    const { filter, add, clear, remove } = useFilter()
     const [consultancyFilter, setConsultancyFilter] = useState([{
         name: "Orbis AG"
     }, {
