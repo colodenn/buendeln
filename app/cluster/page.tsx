@@ -192,7 +192,8 @@ export default function ClusterPage() {
         return [industry, false]
     })))
 
-    const [optimalLocation, setOptimalLocation] = useState<{ name: string, lat: number, long: number }>(optimalCity)
+    const [optimalLocation, setOptimalLocation] = useState<{name: string,lat: number, long: number}>(optimalCity)
+    const [inputCluster, setInputCluster] = useState<string>("2")
 
 
     function resetIndustries() {
@@ -342,32 +343,36 @@ export default function ClusterPage() {
         <>
             <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-8">
                 <div className="col-span-2 row-span-4   rounded-lg bg-white p-8 shadow-lg">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" className="ml-auto">
-                                Industries <ChevronDownIcon className="ml-2 h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            {Object.keys(selectedIndustries).map((industry) => {
-                                return <DropdownMenuCheckboxItem
-                                    key={industry}
-                                    className="capitalize"
-                                    checked={industrySelected(industry)}
-                                    onCheckedChange={() => {
-                                        if (industrySelected(industry)) {
-                                            selectedIndustries[industry] = false
-                                        } else {
-                                            selectedIndustries[industry] = true
-                                        }
-                                        filterByIndustry()
-                                    }}
-                                >
-                                    {industry}
-                                </DropdownMenuCheckboxItem>
-                            })}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="flex flex-row justify-start items-center">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" className="ml-20">
+                                    Industries <ChevronDownIcon className="ml-2 h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                {Object.keys(selectedIndustries).map((industry) => {
+                                    return <DropdownMenuCheckboxItem
+                                        key={industry}
+                                        className="capitalize"
+                                        checked={industrySelected(industry)}
+                                        onCheckedChange={() => {
+                                            if (industrySelected(industry)) {
+                                                selectedIndustries[industry] = false
+                                            } else {
+                                                selectedIndustries[industry] = true
+                                            }
+                                            filterByIndustry()
+                                        }}
+                                    >
+                                        {industry}
+                                    </DropdownMenuCheckboxItem>
+                                })}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        <h1 className="pl-10 font-bold">Your Cluster: <h1 className="font-thin justify-center items-center pl-10">{inputCluster}</h1></h1>
+                        <h1 className="pl-10 font-bold">Recommended City: <h1 className="font-thin pl-8">{optimalCity.name}</h1></h1>
+                    </div>
                     <ResponsiveScatterPlot
                         colors={plotColors}
                         data={companiesforcluster}
