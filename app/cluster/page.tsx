@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/hover-card"
 import locations from "public/locations.json"
 import customers from "public/companies.json"
-import { ChevronDownIcon, Pin, PinIcon } from "lucide-react"
+import { Pin, PinIcon } from "lucide-react"
+import { ChevronDownIcon } from "@radix-ui/react-icons"
 import { DataTableDemo } from "./data-table"
 import { useEffect, useState } from "react"
 
