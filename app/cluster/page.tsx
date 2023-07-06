@@ -89,22 +89,22 @@ locations.companies.forEach((company) => {
 })
 companiesforcluster.sort((a, b) => a.id.localeCompare(b.id))
 
-interface city{
+interface city {
     name: string;
     long: number;
     lat: number;
 }
 const cities: city[] = [
-    {name: "Saarbrücken", lat: 49.237783, long: 6.997024},
-    {name: "Saarlouis", lat: 49.313611, long: 6.752778},
-    {name: "Merzig", lat: 49.443056, long: 6.636111},
-    {name: "Neunkirchen", lat: 49.346667, long: 7.179722},
-    {name: "Homburg", lat: 49.316667, long: 7.333333},
-    {name: "St. Wendel", lat: 49.466667, long: 7.166667},
-    {name: "Völklingen", lat: 49.25, long: 6.833333},
-    {name: "Dillingen", lat: 49.35, long: 6.733333},
-    {name: "Wadern", lat: 49.55, long: 6.883333},
-    {name: "St. Ingbert", lat: 49.282544, long: 7.110980}]
+    { name: "Saarbrücken", lat: 49.237783, long: 6.997024 },
+    { name: "Saarlouis", lat: 49.313611, long: 6.752778 },
+    { name: "Merzig", lat: 49.443056, long: 6.636111 },
+    { name: "Neunkirchen", lat: 49.346667, long: 7.179722 },
+    { name: "Homburg", lat: 49.316667, long: 7.333333 },
+    { name: "St. Wendel", lat: 49.466667, long: 7.166667 },
+    { name: "Völklingen", lat: 49.25, long: 6.833333 },
+    { name: "Dillingen", lat: 49.35, long: 6.733333 },
+    { name: "Wadern", lat: 49.55, long: 6.883333 },
+    { name: "St. Ingbert", lat: 49.282544, long: 7.110980 }]
 
 interface customerEntry {
     id: string;
@@ -116,8 +116,8 @@ interface customerEntry {
     lat: number;
 }
 
-const potentialCustomers:customerEntry[] = []
-let optimalCity:city = {name: "", lat: 0, long: 0}
+const potentialCustomers: customerEntry[] = []
+let optimalCity: city = { name: "", lat: 0, long: 0 }
 function determineOptimalLocation(cluster: string) {
     let x = 0
     let y = 0
@@ -126,7 +126,7 @@ function determineOptimalLocation(cluster: string) {
         //check if customer is in cluster
         let rightCluster = companiesInCluster.includes(customer.consultancy)
         //check if customer is in saarland
-        let closeToSaarland =  48.734792 < customer.lat && customer.lat < 49.878017 && 5.839988 < customer.long && customer.long < 7.948665
+        let closeToSaarland = 48.734792 < customer.lat && customer.lat < 49.878017 && 5.839988 < customer.long && customer.long < 7.948665
         // let closeToSaarland = true
 
         if (rightCluster && closeToSaarland) {
@@ -151,7 +151,7 @@ function determineOptimalLocation(cluster: string) {
     //calculate distance to all cities and find closest
     const distances: { name: string, distance: number }[] = []
     cities.forEach((city) => {
-        distances.push({name: city.name, distance :Math.sqrt(Math.pow(x - city.long, 2) + Math.pow(y - city.lat, 2))})
+        distances.push({ name: city.name, distance: Math.sqrt(Math.pow(x - city.long, 2) + Math.pow(y - city.lat, 2)) })
     })
     distances.sort((a, b) => a.distance - b.distance)
     optimalCity = cities.find((city) => city.name === distances[0].name)!
@@ -192,7 +192,7 @@ export default function ClusterPage() {
         return [industry, false]
     })))
 
-    const [optimalLocation, setOptimalLocation] = useState<{name: string,lat: number, long: number}>(optimalCity)
+    const [optimalLocation, setOptimalLocation] = useState<{ name: string, lat: number, long: number }>(optimalCity)
 
 
     function resetIndustries() {
@@ -278,10 +278,18 @@ export default function ClusterPage() {
     }
 
     useEffect(() => {
-        const test = filter.map(fil => {
+        let test;
+        if (filter.length == 0) {
+            test = [customers]
+        } else {
+            test = filter.map(fil => {
 
-            return customers.filter(e => e.consultancy == fil.name)
-        })
+                return customers.filter(e => e.consultancy == fil.name)
+            })
+
+        }
+
+
 
         const bardata: { [key: string]: string | number }[] = [{ "endcustomer": "B2B" }, { "endcustomer": "B2C" }]
 
@@ -289,9 +297,9 @@ export default function ClusterPage() {
 
 
 
-        var potentialcustoemr = 0
+        var potentialcustoemr = filter.length == 0 ? customers.length : 0
         for (const ele of test) {
-            potentialcustoemr += ele.length
+            potentialcustoemr += filter.length == 0 ? 0 : ele.length
             for (const e of ele) {
                 counts[e["industry"]] = counts[e["industry"]] ? counts[e["industry"]] + 1 : 1;
 
@@ -308,9 +316,10 @@ export default function ClusterPage() {
 
         setBarData(bardata)
 
-        console.log(bardata)
         setPotentialCustomers(potentialcustoemr)
-        console.log(counts)
+
+
+
 
         const industries = Object.keys(counts)
 
@@ -321,7 +330,7 @@ export default function ClusterPage() {
                 "label": e
             }
         })
-
+        console.log(piechartdata)
         setPieChart(piechartdata)
 
     }, [filter])
@@ -470,8 +479,8 @@ export default function ClusterPage() {
                             offset={[-10, -20]}
                         >
                             <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
-                                <Pin style={{color: "#D4AF37"}} />
-                                <h1 className="text-center group-hover:visible" style={{color: "#000000"}}>Optimal Location</h1>
+                                <Pin style={{ color: "#D4AF37" }} />
+                                <h1 className="text-center group-hover:visible" style={{ color: "#000000" }}>Optimal Location</h1>
                             </div>
                         </Marker>
                     </Map >
@@ -618,7 +627,7 @@ export default function ClusterPage() {
                             valueScale={{ type: 'linear' }}
                             indexScale={{ type: 'band', round: true }}
                             colors={{ scheme: 'nivo' }}
-                            keys={filter.map(e => e.name)}
+                            keys={filter.length == 0 ? locations.companies.map(i => i.name) : filter.map(e => e.name)}
                             defs={[
                                 {
                                     id: 'dots',
@@ -680,7 +689,7 @@ export default function ClusterPage() {
                     <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-2 flex justify-center items-center">
                         <div>
                             <h1 className="font-bold mb-8">Competitors</h1>
-                            <p className="font-medium text-xl text-center ">{filter.length}</p>
+                            <p className="font-medium text-xl text-center ">{filter.length == 0 ? locations.companies.length : filter.length}</p>
                         </div>
                     </div>
                     <div className="row-span-1 flex justify-center items-center col-span-1  bg-white rounded-lg shadow-lg p-2 flex-row justify-center items-center">

@@ -186,6 +186,7 @@ export function DataTableDemo() {
         onRowSelectionChange: setRowSelection,
         filterFns: {
             myCustomFilter: (rows, columnIds, filterValue) => {
+                if (filterValue.length == 0) return true
                 for (var i = 0; i < filterValue.length; i++) {
                     if (filterValue[i] == (rows.getValue(columnIds) as string).toLowerCase()) {
                         return true
