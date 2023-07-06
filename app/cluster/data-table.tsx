@@ -47,8 +47,13 @@ import { Cross, X } from "lucide-react"
 import kunden from "public/companies.json"
 import { useStore } from "./page"
 import { table } from "console"
-const data: Company[] = kunden
+const data = kunden as Company[]
 
+declare module '@tanstack/table-core' {
+    interface FilterFns {
+        myCustomFilter: FilterFn<unknown>
+    }
+}
 export type Company = {
     id: string
     endcustomer: "B2C" | "B2B" | "B2B & B2C"

@@ -66,7 +66,7 @@ export const useStore = create<ConsultancyFilter>()((set) => ({
 
 
 
-const color = {
+const color: { [key: string]: string } = {
     "0": "#7570b3",
     "1": "#1b9e77",
     "2": "#d95f02",
@@ -132,7 +132,7 @@ export default function ClusterPage() {
         name: "Pikon"
     }])
 
-    const [piechartdata, setPieChart] = useState([])
+    const [piechartdata, setPieChart] = useState<{ "id": string, "label": string, "value": number }[]>([])
     const [potentialCustomers, setPotentialCustomers] = useState(0)
     const [companies, setCompanies] = useState(locations.companies)
     const [plotColors, setPlotColors] = useState(Object.values(color))
@@ -140,7 +140,7 @@ export default function ClusterPage() {
 
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([])
 
-    const [barData, setBarData] = useState([{ "endcustomer": "B2B" }, { "endcustomer": "B2C" }])
+    const [barData, setBarData] = useState<{ [key: string]: string | number }[]>([{ "endcustomer": "B2B" }, { "endcustomer": "B2C" }])
 
     useEffect(() => {
         setSelectedCompanies(filter.map((f) => f.name))
@@ -238,9 +238,12 @@ export default function ClusterPage() {
             return customers.filter(e => e.consultancy == fil.name)
         })
 
-        const bardata = [{ "endcustomer": "B2B" }, { "endcustomer": "B2C" }]
+        const bardata: { [key: string]: string | number }[] = [{ "endcustomer": "B2B" }, { "endcustomer": "B2C" }]
 
-        const counts = {}
+        const counts: { [key: string]: number } = {}
+
+
+
         var potentialcustoemr = 0
         for (const ele of test) {
             potentialcustoemr += ele.length
@@ -248,12 +251,12 @@ export default function ClusterPage() {
                 counts[e["industry"]] = counts[e["industry"]] ? counts[e["industry"]] + 1 : 1;
 
                 if (e["endcustomer"] == "B2B") {
-                    bardata[0][e["consultancy"]] = bardata[0][e["consultancy"]] ? bardata[0][e["consultancy"]] + 1 : 1
+                    bardata[0][e["consultancy"]] = bardata[0][e["consultancy"]] ? bardata[0][e["consultancy"]] as number + 1 : 1
                 } else if (e["endcustomer"] == "B2C") {
-                    bardata[1][e["consultancy"]] = bardata[1][e["consultancy"]] ? bardata[1][e["consultancy"]] + 1 : 1
+                    bardata[1][e["consultancy"]] = bardata[1][e["consultancy"]] ? bardata[1][e["consultancy"]] as number + 1 : 1
                 } else {
-                    bardata[1][e["consultancy"]] = bardata[1][e["consultancy"]] ? bardata[1][e["consultancy"]] + 1 : 1
-                    bardata[0][e["consultancy"]] = bardata[0][e["consultancy"]] ? bardata[0][e["consultancy"]] + 1 : 1
+                    bardata[1][e["consultancy"]] = bardata[1][e["consultancy"]] ? bardata[1][e["consultancy"]] as number + 1 : 1
+                    bardata[0][e["consultancy"]] = bardata[0][e["consultancy"]] ? bardata[0][e["consultancy"]] as number + 1 : 1
                 }
             }
         }
