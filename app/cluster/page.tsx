@@ -25,6 +25,7 @@ import { create } from 'zustand'
 import { OpacityIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { flushSync } from "react-dom"
+import { filterFns } from "@tanstack/react-table"
 
 type Consultancy = {
     name: string
@@ -51,7 +52,6 @@ export const useStore = create<ConsultancyFilter>()((set) => ({
             console.log("included")
             return { filter: state.filter.filter(pre => pre.name != s.name) }
         } else {
-
             return { filter: state.filter.concat(s) }
         }
     }
@@ -137,6 +137,10 @@ export default function ClusterPage() {
 
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([])
 
+    useEffect(() => {
+        setSelectedCompanies(filter.map((f) => f.name))
+    }, [filter])
+
     const [selectedIndustries, setSelectedIndustries] = useState<{[key: string]: boolean}>(Object.fromEntries(industries.map((industry) => {
         return [industry, false]
     })))
@@ -204,7 +208,6 @@ export default function ClusterPage() {
     }
 
     function update(companies?: string[]) {
-        console.log(selectedCompanies)
         add({ name: "cluster" })
         remove({ name: "cluster" })
 
@@ -221,7 +224,6 @@ export default function ClusterPage() {
     }
 
     function companySelected(company: string) {
-        console.log(company)
         return selectedCompanies.includes(company) || selectedCompanies.length == 0
     }
 
