@@ -25,6 +25,8 @@ import { create } from 'zustand'
 import { OpacityIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { flushSync } from "react-dom"
+import { ResponsivePie } from '@nivo/pie'
+
 
 type Consultancy = {
     name: string
@@ -48,7 +50,6 @@ export const useStore = create<ConsultancyFilter>()((set) => ({
             }
         }
         if (found) {
-            console.log("included")
             return { filter: state.filter.filter(pre => pre.name != s.name) }
         } else {
 
@@ -88,7 +89,7 @@ interface companyEntry {
 
 const companiesforcluster: companyEntry[] = [];
 
-const industries:string[] = []
+const industries: string[] = []
 customers.forEach((customer) => {
     if (!industries.includes(customer.industry)) {
         industries.push(customer.industry)
@@ -131,13 +132,15 @@ export default function ClusterPage() {
         name: "Pikon"
     }])
 
+    const [piechartdata, setPieChart] = useState([])
+
     const [companies, setCompanies] = useState(locations.companies)
     const [plotColors, setPlotColors] = useState(Object.values(color))
     const [selectedClusters, setSelectedClusters] = useState<string[]>([])
 
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([])
 
-    const [selectedIndustries, setSelectedIndustries] = useState<{[key: string]: boolean}>(Object.fromEntries(industries.map((industry) => {
+    const [selectedIndustries, setSelectedIndustries] = useState<{ [key: string]: boolean }>(Object.fromEntries(industries.map((industry) => {
         return [industry, false]
     })))
 
@@ -148,7 +151,7 @@ export default function ClusterPage() {
     }
 
     function filterByIndustry() {
-        const companies:string[] = []
+        const companies: string[] = []
         customers.forEach((customer) => {
             if (industrySelected(customer.industry) && !companies.includes(customer.consultancy)) {
                 companies.push(customer.consultancy)
@@ -185,17 +188,17 @@ export default function ClusterPage() {
     }
 
     function addCluster(cluster: string) {
-        if(!selectedClusters.includes(cluster)) {
+        if (!selectedClusters.includes(cluster)) {
             selectedClusters.push(cluster)
             locations.companies.forEach((company) => {
-                if(company.color == cluster) {
+                if (company.color == cluster) {
                     addCompany(company.name)
                 }
             })
-        }else{
+        } else {
             selectedClusters.splice(selectedClusters.indexOf(cluster), 1)
             locations.companies.forEach((company) => {
-                if(company.color == cluster) {
+                if (company.color == cluster) {
                     removeCompany(company.name)
                 }
             })
@@ -204,7 +207,6 @@ export default function ClusterPage() {
     }
 
     function update(companies?: string[]) {
-        console.log(selectedCompanies)
         add({ name: "cluster" })
         remove({ name: "cluster" })
 
@@ -221,9 +223,35 @@ export default function ClusterPage() {
     }
 
     function companySelected(company: string) {
-        console.log(company)
         return selectedCompanies.includes(company) || selectedCompanies.length == 0
     }
+
+    useEffect(() => {
+        const test = filter.map(fil => {
+
+            return customers.filter(e => e.consultancy == fil.name)
+        })
+        const counts = {}
+        for (const ele of test) {
+            for (const e of ele) {
+                counts[e["industry"]] = counts[e["industry"]] ? counts[e["industry"]] + 1 : 1;
+            }
+        }
+        console.log(counts)
+
+        const industries = Object.keys(counts)
+
+        const piechartdata = industries.map(e => {
+            return {
+                "id": e,
+                "value": counts[e],
+                "label": e
+            }
+        })
+
+        setPieChart(piechartdata)
+
+    }, [filter])
 
 
 
@@ -232,31 +260,32 @@ export default function ClusterPage() {
         <>
             <div className="grid grid-cols-4 gap-4 h-screen grid-rows-6  p-8">
                 <div className="col-span-2 row-span-4   rounded-lg bg-white p-8 shadow-lg">
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Industries <ChevronDownIcon className="ml-2 h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {Object.keys(selectedIndustries).map((industry) => {
-                            return <DropdownMenuCheckboxItem
-                                key={industry}
-                                className="capitalize"
-                                checked={industrySelected(industry)}
-                                onCheckedChange={() =>{
-                                    if(industrySelected(industry)) {
-                                        selectedIndustries[industry] = false
-                                    }else{
-                                        selectedIndustries[industry] = true
-                                    }
-                                    filterByIndustry()}}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="ml-auto">
+                                Industries <ChevronDownIcon className="ml-2 h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            {Object.keys(selectedIndustries).map((industry) => {
+                                return <DropdownMenuCheckboxItem
+                                    key={industry}
+                                    className="capitalize"
+                                    checked={industrySelected(industry)}
+                                    onCheckedChange={() => {
+                                        if (industrySelected(industry)) {
+                                            selectedIndustries[industry] = false
+                                        } else {
+                                            selectedIndustries[industry] = true
+                                        }
+                                        filterByIndustry()
+                                    }}
                                 >
-                                {industry}
-                            </DropdownMenuCheckboxItem>
-                            })} 
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                                    {industry}
+                                </DropdownMenuCheckboxItem>
+                            })}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                     <ResponsiveScatterPlot
                         colors={plotColors}
                         data={companiesforcluster}
@@ -271,9 +300,9 @@ export default function ClusterPage() {
                         nodeSize={20}
                         onClick={(node, event) => {
                             add({ name: node.data.name })
-                            if(selectedCompanies.includes(node.data.name)) {
+                            if (selectedCompanies.includes(node.data.name)) {
                                 removeCompany(node.data.name)
-                            }else{
+                            } else {
                                 addCompany(node.data.name)
                             }
                         }}
@@ -353,8 +382,8 @@ export default function ClusterPage() {
                                 offset={[-10, -20]}
                             >
                                 <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
-                                    <Pin style={{ color: companySelected(company.name) ? color[company.color] : "#FFFFFF" , opacity: companySelected(company.name) ? 1.0 : 0.35}} />
-                                    <p className="text-center group-hover:visible" style={{opacity: companySelected(company.name) ? 1.0 : 0.0}}>{company.name}</p>
+                                    <Pin style={{ color: companySelected(company.name) ? color[company.color] : "#FFFFFF", opacity: companySelected(company.name) ? 1.0 : 0.35 }} />
+                                    <p className="text-center group-hover:visible" style={{ opacity: companySelected(company.name) ? 1.0 : 0.0 }}>{company.name}</p>
                                 </div>
                             </Marker>
                         )
@@ -366,9 +395,148 @@ export default function ClusterPage() {
                 <div className="col-span-2 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
                     <DataTableDemo />
                 </div>
-                <div className="col-span-1 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
+                <div className="col-span-1 row-span-2 bg-white  rounded-lg shadow-lg px-4 ">
+                    <ResponsivePie
+                        data={piechartdata}
+                        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+                        innerRadius={0.5}
+                        padAngle={0.7}
+                        cornerRadius={3}
+                        activeOuterRadiusOffset={8}
+                        borderWidth={1}
+                        borderColor={{
+                            from: 'color',
+                            modifiers: [
+                                [
+                                    'darker',
+                                    0.2
+                                ]
+                            ]
+                        }}
+                        arcLinkLabelsSkipAngle={10}
+                        arcLinkLabelsTextColor="#333333"
+                        arcLinkLabelsThickness={2}
+                        arcLinkLabelsColor={{ from: 'color' }}
+                        arcLabelsSkipAngle={10}
+                        arcLabelsTextColor={{
+                            from: 'color',
+                            modifiers: [
+                                [
+                                    'darker',
+                                    2
+                                ]
+                            ]
+                        }}
+                        defs={[
+                            {
+                                id: 'dots',
+                                type: 'patternDots',
+                                background: 'inherit',
+                                color: 'rgba(255, 255, 255, 0.3)',
+                                size: 4,
+                                padding: 1,
+                                stagger: true
+                            },
+                            {
+                                id: 'lines',
+                                type: 'patternLines',
+                                background: 'inherit',
+                                color: 'rgba(255, 255, 255, 0.3)',
+                                rotation: -45,
+                                lineWidth: 6,
+                                spacing: 10
+                            }
+                        ]}
+                        fill={[
+                            {
+                                match: {
+                                    id: 'ruby'
+                                },
+                                id: 'dots'
+                            },
+                            {
+                                match: {
+                                    id: 'c'
+                                },
+                                id: 'dots'
+                            },
+                            {
+                                match: {
+                                    id: 'go'
+                                },
+                                id: 'dots'
+                            },
+                            {
+                                match: {
+                                    id: 'python'
+                                },
+                                id: 'dots'
+                            },
+                            {
+                                match: {
+                                    id: 'scala'
+                                },
+                                id: 'lines'
+                            },
+                            {
+                                match: {
+                                    id: 'lisp'
+                                },
+                                id: 'lines'
+                            },
+                            {
+                                match: {
+                                    id: 'elixir'
+                                },
+                                id: 'lines'
+                            },
+                            {
+                                match: {
+                                    id: 'javascript'
+                                },
+                                id: 'lines'
+                            }
+                        ]}
+                        legends={[
+                            {
+                                anchor: 'bottom',
+                                direction: 'row',
+                                justify: false,
+                                translateX: 0,
+                                translateY: 56,
+                                itemsSpacing: 0,
+                                itemWidth: 100,
+                                itemHeight: 18,
+                                itemTextColor: '#999',
+                                itemDirection: 'left-to-right',
+                                itemOpacity: 1,
+                                symbolSize: 18,
+                                symbolShape: 'circle',
+                                effects: [
+                                    {
+                                        on: 'hover',
+                                        style: {
+                                            itemTextColor: '#000'
+                                        }
+                                    }
+                                ]
+                            }
+                        ]}
+                    />
                 </div>
-                <div className="col-span-1 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
+                <div className="col-span-1 row-span-2 gap-4  grid grid-cols-2 grid-rows-2  rounded-lg  ">
+                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-12">
+
+                    </div>
+                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-12">
+
+                    </div>
+                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-12">
+
+                    </div>
+                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-2">
+
+                    </div>
                 </div>
             </div>
         </>
