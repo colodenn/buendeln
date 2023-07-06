@@ -29,6 +29,7 @@ import { ResponsivePie } from '@nivo/pie'
 
 import { filterFns } from "@tanstack/react-table"
 import { useFilter } from "@/store/filter"
+import { useInput } from "@/store/input"
 
 
 
@@ -53,6 +54,17 @@ interface companyEntry {
         x: number;
         y: number;
     }]
+}
+
+const clusters: { [key: string]: number } = {
+    "automotive": 0,
+    "health and care": 0,
+    "industry": 0,
+    "service provider": 3,
+    "energy suppliers and public utilities": 1,
+    "manufacturing": 3,
+    "education": 2,
+    "logistik": 3
 }
 
 const companiesforcluster: companyEntry[] = [];
@@ -169,8 +181,6 @@ determineOptimalLocation("3")
 export default function ClusterPage() {
     const { filter, add, clear, remove } = useFilter()
     const [consultancyFilter, setConsultancyFilter] = useState([{
-        name: "Orbis AG"
-    }, {
         name: "Pikon"
     }])
 
@@ -192,9 +202,9 @@ export default function ClusterPage() {
         return [industry, false]
     })))
 
-    const [optimalLocation, setOptimalLocation] = useState<{name: string,lat: number, long: number}>(optimalCity)
+    const [optimalLocation, setOptimalLocation] = useState<{ name: string, lat: number, long: number }>(optimalCity)
     const [inputCluster, setInputCluster] = useState<string>("2")
-
+    const { input } = useInput()
 
     function resetIndustries() {
         setSelectedIndustries(Object.fromEntries(industries.map((industry) => {
@@ -370,7 +380,7 @@ export default function ClusterPage() {
                                 })}
                             </DropdownMenuContent>
                         </DropdownMenu>
-                        <h1 className="pl-10 font-bold">Your Cluster: <h1 className="font-thin justify-center items-center pl-10">{inputCluster}</h1></h1>
+                        <h1 className="pl-10 font-bold">Your Cluster: <h1 className="font-thin justify-center items-center pl-10">{clusters[input.industry]}</h1></h1>
                         <h1 className="pl-10 font-bold">Recommended City: <h1 className="font-thin pl-8">{optimalCity.name}</h1></h1>
                     </div>
                     <ResponsiveScatterPlot

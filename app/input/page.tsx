@@ -35,6 +35,7 @@ import { toast } from "@/components/ui/use-toast"
 import Link from "next/link"
 import { useInput } from "@/store/input"
 import { useRouter } from "next/navigation"
+import customers from "public/companies.json"
 
 export const FormSchema = z.object({
     company: z.string().min(2, {
@@ -44,18 +45,22 @@ export const FormSchema = z.object({
         required_error: "Please select a language.",
     })
 })
+const industries: string[] = []
+let languages: { "label": string, "value": string }[] = []
+customers.forEach((customer) => {
+    if (!industries.includes(customer.industry)) {
+        languages.push(
+            {
+                "label": customer.industry,
+                "value": customer.industry.toLocaleLowerCase()
+            }
+        )
+        industries.push(customer.industry)
+    }
+})
 
-const languages = [
-    { label: "Healthcare", value: "en" },
-    { label: "Automotive", value: "fr" },
-    { label: "Trade", value: "de" },
-    { label: "Service Provider", value: "es" },
-    { label: "Chemie", value: "pt" },
-    { label: "Electricity", value: "ru" },
-    { label: "Insurance", value: "ja" },
-    { label: "Food", value: "ko" },
-    { label: "Engineering", value: "zh" },
-] as const
+
+
 
 export default function InputPage() {
     const { input, submit } = useInput()
