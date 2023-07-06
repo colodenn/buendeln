@@ -73,7 +73,7 @@ export default function InputPage() {
     }
     return (
         <>
-            <Input id="picture" type="file" className=" border-2 border-dashed bg-white bg-opacity-50 p-24 cursor-pointer" />
+            <Input id="picture" type="file" disabled className=" border-2 border-dashed bg-white bg-opacity-50 p-24 cursor-pointer" />
             <Separator className="my-12" />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className=" ">
@@ -167,7 +167,7 @@ export default function InputPage() {
                     <div className="w-full mt-12">
                         <Button className="w-full" type="submit">Submit</Button><br />
                         <Separator className="my-4 " />
-                        <Link className="text-center flex justify-center  text-lg text-muted-foreground" href="#">skip</Link>
+                        <Link className="text-center flex justify-center  text-lg text-muted-foreground" href="/cluster">skip</Link>
                     </div>
                 </form>
             </Form>
