@@ -33,8 +33,10 @@ import {
 } from "@/components/ui/popover"
 import { toast } from "@/components/ui/use-toast"
 import Link from "next/link"
+import { useInput } from "@/store/input"
+import { useRouter } from "next/navigation"
 
-const FormSchema = z.object({
+export const FormSchema = z.object({
     company: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
@@ -56,12 +58,14 @@ const languages = [
 ] as const
 
 export default function InputPage() {
+    const { input, submit } = useInput()
+    const router = useRouter()
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        console.log("test")
+        submit(data);
         toast({
             title: "You submitted the following values:",
             description: (
@@ -70,6 +74,8 @@ export default function InputPage() {
                 </pre>
             ),
         })
+        router.push("/cluster")
+
     }
     return (
         <>
