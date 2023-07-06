@@ -30,18 +30,6 @@ import { ResponsivePie } from '@nivo/pie'
 import { filterFns } from "@tanstack/react-table"
 import { useFilter } from "@/store/filter"
 
-type Consultancy = {
-    name: string
-}
-
-type ConsultancyFilter = {
-    filter: Consultancy[]
-    add: (s: Consultancy) => void
-    remove: (a: Consultancy) => void
-    clear: () => void
-}
-
-
 
 
 
@@ -533,26 +521,11 @@ export default function ClusterPage() {
                     />
                 </div>
                 <div className="col-span-1 row-span-2 gap-4  grid grid-cols-2 grid-rows-2  rounded-lg  ">
-                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-2 flex justify-center items-center">
-                        <div>
-                            <h1 className="font-bold mb-8">Competitors</h1>
-                            <p className="font-medium text-xl text-center ">{filter.length}</p>
-                        </div>
-                    </div>
-                    <div className="row-span-1 flex justify-center items-center col-span-1  bg-white rounded-lg shadow-lg p-2 flex-row justify-center items-center">
-                        <div>
-                            <h1 className="font-bold mb-8">Potential Customers</h1>
-                            <p className="font-medium text-xl text-center ">{
-                                potentialCustomers
-                            }</p>
-
-                        </div>
-                    </div>
-                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-2 w-full flex justify-center items-center">
+                    <div className="row-span-2 col-span-1  bg-white rounded-lg shadow-lg p-2 w-full flex justify-center items-center">
                         <ResponsiveBar
                             data={barData}
                             indexBy="endcustomer"
-                            margin={{ top: 0, right: 10, bottom: 20, left: 50 }}
+                            margin={{ top: 20, right: 10, bottom: 20, left: 50 }}
                             padding={0.3}
                             valueScale={{ type: 'linear' }}
                             indexScale={{ type: 'band', round: true }}
@@ -616,9 +589,22 @@ export default function ClusterPage() {
                             barAriaLabel={e => e.id + ": " + e.formattedValue + " in country: " + e.indexValue}
                         />
                     </div>
-                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-2">
-
+                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-2 flex justify-center items-center">
+                        <div>
+                            <h1 className="font-bold mb-8">Competitors</h1>
+                            <p className="font-medium text-xl text-center ">{filter.length}</p>
+                        </div>
                     </div>
+                    <div className="row-span-1 flex justify-center items-center col-span-1  bg-white rounded-lg shadow-lg p-2 flex-row justify-center items-center">
+                        <div>
+                            <h1 className="font-bold mb-8">Potential Customers</h1>
+                            <p className="font-medium text-xl text-center ">{
+                                potentialCustomers
+                            }</p>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </>
