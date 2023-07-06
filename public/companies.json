@@ -12,8 +12,8 @@
   "consultancy": "amotiq solutions GmbH",
   "industry": "Automotive",
   "endcustomer": "B2B",
-  "long": 49.203975,
-  "lat": 7.022149
+  "long": 7.022149,
+  "lat": 49.203975
 }, {
   "id": "578fbee0-1b3c-11ee-827d-0242ac1c000c",
   "name": "Uniklinik Köln",
@@ -28,8 +28,8 @@
   "consultancy": "amotiq solutions GmbH",
   "industry": "Health and Care",
   "endcustomer": "B2B & B2C",
-  "long": 49.280980,
-  "lat": 7.116504
+  "long": 7.116504,
+  "lat": 49.280980
 }, {
   "id": "578fd1fa-1b3c-11ee-827d-0242ac1c000c",
   "name": "Rittal",
@@ -84,8 +84,8 @@
   "consultancy": "DHC Business Solutions GmbH & Co. KG",
   "industry": "Energy suppliers and public utilities",
   "endcustomer": "B2B & B2C",
-  "long": 51.048760,
-  "lat": 13.721621
+  "long": 13.721621,
+  "lat": 51.048760
 }, {
   "id": "579341be-1b3c-11ee-827d-0242ac1c000c",
   "name": "ENSO Energie Sachsen Ost AG",
@@ -100,40 +100,40 @@
   "consultancy": "DHC Business Solutions GmbH & Co. KG",
   "industry": "Health and Care",
   "endcustomer": "B2B",
-  "long": 47.998354,
-  "lat": 11.362297
+  "long": 11.362297,
+  "lat": 47.998354
 }, {
   "id": "57935442-1b3c-11ee-827d-0242ac1c000c",
   "name": "AirLiquide Medical",
   "consultancy": "DHC Business Solutions GmbH & Co. KG",
   "industry": "Health and Care",
   "endcustomer": "B2B",
-  "long": 49.553162,
-  "lat": 5.845550
+  "long": 5.845550,
+  "lat": 49.553162
 }, {
   "id": "57935f00-1b3c-11ee-827d-0242ac1c000c",
   "name": "AkknaTek GmbH",
   "consultancy": "DHC Business Solutions GmbH & Co. KG",
   "industry": "Health and Care",
   "endcustomer": "B2B",
-  "long": 49.432574,
-  "lat": 7.753579
+  "long": 7.753579,
+  "lat": 49.432574
 }, {
   "id": "57936838-1b3c-11ee-827d-0242ac1c000c",
   "name": "BEUMER Group",
   "consultancy": "DHC Business Solutions GmbH & Co. KG",
   "industry": "Manufacturing",
   "endcustomer": "B2B",
-  "long": 49.966473,
-  "lat": 8.825603
+  "long": 8.825603,
+  "lat": 49.966473
 }, {
   "id": "57937184-1b3c-11ee-827d-0242ac1c000c",
   "name": "Bayrische Versorgungskammer",
   "consultancy": "DHC Business Solutions GmbH & Co. KG",
   "industry": "Service provider",
   "endcustomer": "B2C",
-  "long": 49.431399,
-  "lat": 7.779924
+  "long": 7.779924,
+  "lat": 49.431399
 }, {
   "id": "57937a8a-1b3c-11ee-827d-0242ac1c000c",
   "name": "Macio GmbH",
@@ -142,7 +142,17 @@
   "endcustomer": "B2B",
   "long": 8.4377268,
   "lat": 49.0204645
-}, {
+},{
+  "id": "57937a8a-1b3c-31ae-827d-0242ac1c000c",
+  "name": "Holzbau Schneider GmbH",
+  "consultancy": "Dreikant Consulting",
+  "industry": "Industry",
+  "endcustomer": "B2C & B2B",
+  "long": 6.782534,
+  "lat": 49.365400
+
+}, 
+{
   "id": "57953d48-1b3c-11ee-827d-0242ac1c000c",
   "name": "Energie SaarLorLux",
   "consultancy": "IMA GmbH - Marketing & Consulting",
@@ -172,8 +182,8 @@
   "consultancy": "Orbis AG",
   "industry": "Industry",
   "endcustomer": "B2B",
-  "long": 49.233400,
-  "lat": 7.272304
+  "long": 7.272304,
+  "lat": 49.233400
 }, {
   "id": "5795a616-1b3c-11ee-827d-0242ac1c000c",
   "name": "hörmann",
@@ -228,8 +238,8 @@
   "consultancy": "PIKON International Consulting Group GmbH",
   "industry": "Health and Care",
   "endcustomer": "B2B",
-  "long": 50.684645,
-  "lat": 9.759824
+  "long": 9.759824,
+  "lat": 50.684645
 }, {
   "id": "57966bd2-1b3c-11ee-827d-0242ac1c000c",
   "name": "DKMS",
@@ -362,8 +372,7 @@
   "id": "57971a96-1b3c-11ee-827d-0242ac1c000c",
   "name": "Energis",
   "consultancy": "Prego Services GmbH",
-  "industry": "Energy suppmbH",
-  "industry": "Education",
+  "industry": "Energy suppliers and public utilities",
   "endcustomer": "B2C",
   "long": 9.7353299,
   "lat": 49.1135993
@@ -413,8 +422,8 @@
   "consultancy": "Scheer GmbH",
   "industry": "Manufacturing",
   "endcustomer": "B2B",
-  "long": 49.520320,
-  "lat": 8.549161
+  "long": 8.549161,
+  "lat": 49.520320
 }, {
   "id": "579938c6-1b3c-11ee-827d-0242ac1c000c",
   "name": "BMW AG",
