@@ -218,11 +218,11 @@ export function DataTableDemo() {
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm"
+                    className="w-42"
                 />
-                <div className="ml-8 flex space-x-2">
+                <div className="ml-8 flex space-x-2 min-w-0    ">
                     {filter.map((fi, index) => (
-                        <Badge key={index} onClick={() => remove(fi)} className="bg-[#7570b3] cursor-pointer flex items-center"><p>{fi.name}</p> <X className="w-4 ml-2" /></Badge>
+                        <Badge key={index} onClick={() => remove(fi)} className="bg-[#7570b3] cursor-pointer flex items-center overflow-hidden h-8"><p className=" overflow-hidden">{fi.name}</p> <X className="w-4 ml-2" /></Badge>
                     ))}
                 </div>
                 <DropdownMenu>

@@ -55,7 +55,6 @@ const languages = [
     { label: "Engineering", value: "zh" },
 ] as const
 
-
 export default function InputPage() {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -76,8 +75,6 @@ export default function InputPage() {
         <>
             <Input id="picture" type="file" className=" border-2 border-dashed bg-white bg-opacity-50 p-24 cursor-pointer" />
             <Separator className="my-12" />
-
-
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className=" ">
                     <div className="flex w-full items-center justify-between">
@@ -101,7 +98,6 @@ export default function InputPage() {
                             />
                         </div>
                         <div className="w-full">
-
                             <FormField
                                 control={form.control}
                                 name="industry"
@@ -172,7 +168,6 @@ export default function InputPage() {
                         <Button className="w-full" type="submit">Submit</Button><br />
                         <Separator className="my-4 " />
                         <Link className="text-center flex justify-center  text-lg text-muted-foreground" href="#">skip</Link>
-
                     </div>
                 </form>
             </Form>
