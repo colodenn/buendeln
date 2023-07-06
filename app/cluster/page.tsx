@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
 import { animated } from '@react-spring/web'
-
+import { ResponsiveBar } from '@nivo/bar'
 import { Map, GeoJson, Marker } from 'pigeon-maps'
 import { osm } from 'pigeon-maps/providers'
 import { ResponsiveScatterPlot } from '@nivo/scatterplot'
@@ -133,12 +133,14 @@ export default function ClusterPage() {
     }])
 
     const [piechartdata, setPieChart] = useState([])
-
+    const [potentialCustomers, setPotentialCustomers] = useState(0)
     const [companies, setCompanies] = useState(locations.companies)
     const [plotColors, setPlotColors] = useState(Object.values(color))
     const [selectedClusters, setSelectedClusters] = useState<string[]>([])
 
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([])
+
+    const [barData, setBarData] = useState([{ "endcustomer": "B2B" }, { "endcustomer": "B2C" }])
 
     useEffect(() => {
         setSelectedCompanies(filter.map((f) => f.name))
@@ -235,12 +237,31 @@ export default function ClusterPage() {
 
             return customers.filter(e => e.consultancy == fil.name)
         })
+
+        const bardata = [{ "endcustomer": "B2B" }, { "endcustomer": "B2C" }]
+
         const counts = {}
+        var potentialcustoemr = 0
         for (const ele of test) {
+            potentialcustoemr += ele.length
             for (const e of ele) {
                 counts[e["industry"]] = counts[e["industry"]] ? counts[e["industry"]] + 1 : 1;
+
+                if (e["endcustomer"] == "B2B") {
+                    bardata[0][e["consultancy"]] = bardata[0][e["consultancy"]] ? bardata[0][e["consultancy"]] + 1 : 1
+                } else if (e["endcustomer"] == "B2C") {
+                    bardata[1][e["consultancy"]] = bardata[1][e["consultancy"]] ? bardata[1][e["consultancy"]] + 1 : 1
+                } else {
+                    bardata[1][e["consultancy"]] = bardata[1][e["consultancy"]] ? bardata[1][e["consultancy"]] + 1 : 1
+                    bardata[0][e["consultancy"]] = bardata[0][e["consultancy"]] ? bardata[0][e["consultancy"]] + 1 : 1
+                }
             }
         }
+
+        setBarData(bardata)
+
+        console.log(bardata)
+        setPotentialCustomers(potentialcustoemr)
         console.log(counts)
 
         const industries = Object.keys(counts)
@@ -529,14 +550,88 @@ export default function ClusterPage() {
                     />
                 </div>
                 <div className="col-span-1 row-span-2 gap-4  grid grid-cols-2 grid-rows-2  rounded-lg  ">
-                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-12">
-
+                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-2 flex justify-center items-center">
+                        <div>
+                            <h1 className="font-bold mb-8">Competitors</h1>
+                            <p className="font-medium text-xl text-center ">{filter.length}</p>
+                        </div>
                     </div>
-                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-12">
+                    <div className="row-span-1 flex justify-center items-center col-span-1  bg-white rounded-lg shadow-lg p-2 flex-row justify-center items-center">
+                        <div>
+                            <h1 className="font-bold mb-8">Potential Customers</h1>
+                            <p className="font-medium text-xl text-center ">{
+                                potentialCustomers
+                            }</p>
 
+                        </div>
                     </div>
-                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-12">
+                    <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-2 w-full flex justify-center items-center">
+                        <ResponsiveBar
+                            data={barData}
+                            indexBy="endcustomer"
+                            margin={{ top: 0, right: 10, bottom: 20, left: 50 }}
+                            padding={0.3}
+                            valueScale={{ type: 'linear' }}
+                            indexScale={{ type: 'band', round: true }}
+                            colors={{ scheme: 'nivo' }}
+                            keys={filter.map(e => e.name)}
+                            defs={[
+                                {
+                                    id: 'dots',
+                                    type: 'patternDots',
+                                    background: 'inherit',
+                                    color: '#38bcb2',
+                                    size: 4,
+                                    padding: 1,
+                                    stagger: true
+                                },
+                                {
+                                    id: 'lines',
+                                    type: 'patternLines',
+                                    background: 'inherit',
+                                    color: '#eed312',
+                                    rotation: -45,
+                                    lineWidth: 6,
+                                    spacing: 10
+                                }
+                            ]}
 
+                            borderColor={{
+                                from: 'color',
+                                modifiers: [
+                                    [
+                                        'darker',
+                                        1.6
+                                    ]
+                                ]
+                            }}
+                            axisTop={null}
+                            axisRight={null}
+
+                            axisLeft={{
+                                tickSize: 5,
+                                tickPadding: 5,
+                                tickRotation: 0,
+                                legend: 'Amount',
+                                legendPosition: 'middle',
+                                legendOffset: -40
+                            }}
+                            labelSkipWidth={12}
+                            labelSkipHeight={12}
+                            labelTextColor={{
+                                from: 'color',
+                                modifiers: [
+                                    [
+                                        'darker',
+                                        1.6
+                                    ]
+                                ]
+                            }}
+
+                            role="application"
+                            ariaLabel="Nivo bar chart demo"
+                            barAriaLabel={e => e.id + ": " + e.formattedValue + " in country: " + e.indexValue}
+                        />
                     </div>
                     <div className="row-span-1 col-span-1  bg-white rounded-lg shadow-lg p-2">
 
