@@ -1,4 +1,6 @@
 # Bündeln
+![banner](https://github.com/colodenn/buendeln/assets/43729834/845f6359-b186-4689-b92f-e7ca4e4e1c11)
+
 Market segments have been created since 1956 to
 form groups in which individuals are as similar as possible to
 each other, but dissimilar to other groups. The goal of this is
