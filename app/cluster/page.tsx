@@ -89,6 +89,80 @@ locations.companies.forEach((company) => {
 })
 companiesforcluster.sort((a, b) => a.id.localeCompare(b.id))
 
+interface city{
+    name: string;
+    long: number;
+    lat: number;
+}
+const cities: city[] = [
+    {name: "Saarbrücken", lat: 49.237783, long: 6.997024},
+    {name: "Saarlouis", lat: 49.313611, long: 6.752778},
+    {name: "Merzig", lat: 49.443056, long: 6.636111},
+    {name: "Neunkirchen", lat: 49.346667, long: 7.179722},
+    {name: "Homburg", lat: 49.316667, long: 7.333333},
+    {name: "St. Wendel", lat: 49.466667, long: 7.166667},
+    {name: "Völklingen", lat: 49.25, long: 6.833333},
+    {name: "Dillingen", lat: 49.35, long: 6.733333},
+    {name: "Wadern", lat: 49.55, long: 6.883333},
+    {name: "St. Ingbert", lat: 49.282544, long: 7.110980}]
+
+interface customerEntry {
+    id: string;
+    name: string;
+    conultancy: string;
+    industry: string;
+    endcustomer: string;
+    long: number;
+    lat: number;
+}
+
+const potentialCustomers:customerEntry[] = []
+let optimalCity:city = {name: "", lat: 0, long: 0}
+function determineOptimalLocation(cluster: string) {
+    let x = 0
+    let y = 0
+    const companiesInCluster = locations.companies.filter((company) => company.color === cluster).map((company) => company.name)
+    customers.forEach((customer) => {
+        //check if customer is in cluster
+        let rightCluster = companiesInCluster.includes(customer.consultancy)
+        //check if customer is in saarland
+        let closeToSaarland =  48.734792 < customer.lat && customer.lat < 49.878017 && 5.839988 < customer.long && customer.long < 7.948665
+        // let closeToSaarland = true
+
+        if (rightCluster && closeToSaarland) {
+            potentialCustomers.push({
+                id: customer.id,
+                name: customer.name,
+                conultancy: customer.consultancy,
+                industry: customer.industry,
+                endcustomer: customer.endcustomer,
+                long: customer.long,
+                lat: customer.lat
+            })
+        }
+    })
+    potentialCustomers.forEach((customer) => {
+        x += customer.long
+        y += customer.lat
+    })
+    x = x / potentialCustomers.length
+    y = y / potentialCustomers.length
+
+    //calculate distance to all cities and find closest
+    const distances: { name: string, distance: number }[] = []
+    cities.forEach((city) => {
+        distances.push({name: city.name, distance :Math.sqrt(Math.pow(x - city.long, 2) + Math.pow(y - city.lat, 2))})
+    })
+    distances.sort((a, b) => a.distance - b.distance)
+    optimalCity = cities.find((city) => city.name === distances[0].name)!
+
+}
+determineOptimalLocation("3")
+
+
+
+
+
 
 
 
@@ -117,6 +191,9 @@ export default function ClusterPage() {
     const [selectedIndustries, setSelectedIndustries] = useState<{ [key: string]: boolean }>(Object.fromEntries(industries.map((industry) => {
         return [industry, false]
     })))
+
+    const [optimalLocation, setOptimalLocation] = useState<{name: string,lat: number, long: number}>(optimalCity)
+
 
     function resetIndustries() {
         setSelectedIndustries(Object.fromEntries(industries.map((industry) => {
@@ -385,7 +462,18 @@ export default function ClusterPage() {
                         )
                         )
                         }
-
+                        <Marker
+                            key="optimalLocation"
+                            width={40}
+                            anchor={[optimalLocation.lat, optimalLocation.long]}
+                            color={"#D4AF37"}
+                            offset={[-10, -20]}
+                        >
+                            <div className="group cursor-pointer z-50 flex items-center space-x-2 font-bold">
+                                <Pin style={{color: "#D4AF37"}} />
+                                <h1 className="text-center group-hover:visible" style={{color: "#000000"}}>Optimal Location</h1>
+                            </div>
+                        </Marker>
                     </Map >
                 </div>
                 <div className="col-span-2 row-span-2 bg-white  rounded-lg shadow-lg px-12 ">
