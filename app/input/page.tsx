@@ -37,7 +37,7 @@ import { useInput } from "@/store/input"
 import { useRouter } from "next/navigation"
 import customers from "public/companies.json"
 
-export const FormSchema = z.object({
+const FormSchema = z.object({
     company: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
@@ -45,6 +45,8 @@ export const FormSchema = z.object({
         required_error: "Please select a language.",
     })
 })
+
+
 const industries: string[] = []
 let languages: { "label": string, "value": string }[] = []
 customers.forEach((customer) => {
