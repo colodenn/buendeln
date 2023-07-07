@@ -1,7 +1,5 @@
 import { create } from "zustand"
 
-import { FormSchema } from "@/app/input/page"
-
 type form = {
   company: string
   industry: string
